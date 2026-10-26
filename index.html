@@ -613,7 +613,7 @@
                 Create free at <strong>console.firebase.google.com</strong> &rarr; Realtime Database &rarr; Test Mode. Paste your URL below:
               </p>
               <div class="flex items-center gap-1.5">
-                <input type="text" id="firebaseUrlInput" placeholder="https://<project>-default-rtdb.firebaseio.com" class="flex-1 bg-surface-low text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold font-mono text-[11px]">
+                <input type="text" id="firebaseUrlInput" value="https://grill-baf95-default-rtdb.firebaseio.com" placeholder="https://<project>-default-rtdb.firebaseio.com" class="flex-1 bg-surface-low text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold font-mono text-[11px]">
                 <button onclick="saveAndTestFirebase()" class="px-3 py-2 bg-amber-500 hover:bg-amber-400 text-surface-lowest font-bold text-xs rounded-xl active:scale-95">Save &amp; Sync</button>
               </div>
             </div>
@@ -1299,7 +1299,7 @@
       renderAdminItemList();
 
       const ghToken = localStorage.getItem('grill_island_gh_token') || '';
-      const fbUrl = localStorage.getItem('grill_island_firebase_url') || '';
+      const fbUrl = localStorage.getItem('grill_island_firebase_url') || DEFAULT_FIREBASE_URL;
       const ghInput = document.getElementById('ghTokenInput');
       const fbInput = document.getElementById('firebaseUrlInput');
       if (ghInput) ghInput.value = ghToken;
@@ -1524,7 +1524,7 @@
     }
 
     // DEFAULT CLOUD FIREBASE URL (Embedded globally for all customer phones)
-    let DEFAULT_FIREBASE_URL = '';
+    let DEFAULT_FIREBASE_URL = 'https://grill-baf95-default-rtdb.firebaseio.com';
     let activeFirebaseEventSource = null;
 
     function getFirebaseUrl() {
@@ -1650,7 +1650,7 @@
       drawer.classList.toggle('hidden');
       if (!drawer.classList.contains('hidden')) {
         const ghToken = localStorage.getItem('grill_island_gh_token') || '';
-        const fbUrl = localStorage.getItem('grill_island_firebase_url') || '';
+        const fbUrl = localStorage.getItem('grill_island_firebase_url') || DEFAULT_FIREBASE_URL;
         const ghInput = document.getElementById('ghTokenInput');
         const fbInput = document.getElementById('firebaseUrlInput');
         if (ghInput) ghInput.value = ghToken;
