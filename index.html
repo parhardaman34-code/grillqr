@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <meta content="web_standard" name="shell-type">
+  <meta name="theme-color" content="#161311">
+  <title>Grill Island | Phone QR Menu &amp; Live Order</title>
+  
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600..800;1,600..800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+    body {
+      overscroll-behavior-y: none;
+      -webkit-font-smoothing: antialiased;
+    }
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-none {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .modal-backdrop {
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(5px);
+    }
+    /* Subtle pulse animation for Instagram badge */
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.92; transform: scale(1.03); }
+    }
+    .insta-pulse {
+      animation: pulse-subtle 3s infinite ease-in-out;
+    }
+  </style>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-lowest": "#0c0a09",
+            "surface-low": "#161311",
+            "surface-card": "#1f1b19",
+            "surface-high": "#2b2623",
+            "surface-highest": "#38322e",
+            "background": "#14110f",
+            "on-surface": "#f5f1eb",
+            "on-muted": "#9e9690",
+            "brand-gold": "#f0be71",
+            "brand-gold-light": "#ffdeae",
+            "brand-amber": "#ff7a29",
+            "veg-green": "#22c55e"
+          },
+          fontFamily: {
+            body: ["Plus Jakarta Sans", "sans-serif"],
+            title: ["Playfair Display", "serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background font-body text-on-surface antialiased min-h-screen flex flex-col pb-28 select-none">
+
+  <!-- MOBILE-FIRST APP CONTAINER -->
+  <div class="w-full max-w-lg mx-auto flex flex-col min-h-screen bg-background relative shadow-2xl">
+
+    <!-- TOP COMPACT APP BAR (FIXED) -->
+    <header class="sticky top-0 z-40 bg-surface-lowest/95 backdrop-blur-md border-b border-surface-high/60 px-4 py-2.5 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-brand-gold/60 shrink-0 bg-surface-low">
+          <img src="logo.jpg" alt="Grill Island Logo" class="w-full h-full object-cover">
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-1.5">
+            <span class="font-title font-bold text-base tracking-wide text-brand-gold leading-tight">GRILL ISLAND</span>
+            <span class="w-2 h-2 rounded-full bg-veg-green" title="100% Pure Veg"></span>
+          </div>
+          <span class="text-[10px] text-on-muted tracking-wider uppercase font-semibold">Phagwara &bull; Live Sigri Hearth</span>
+        </div>
+      </div>
+
+      <!-- Right Header Actions (Follow Insta & Quick Cart) -->
+      <div class="flex items-center gap-2">
+        <button onclick="openInstaPrompt()" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-gradient-to-r from-purple-600/30 via-pink-600/30 to-amber-500/30 border border-pink-500/40 text-[11px] font-bold text-pink-300 hover:text-white transition-all active:scale-95">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          <span>Insta</span>
+        </button>
+
+        <button onclick="openCartModal()" class="relative flex items-center justify-center w-10 h-10 rounded-full bg-surface-high hover:bg-surface-highest text-brand-gold border border-brand-gold/20 active:scale-95 transition-all">
+          <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+          <span id="headerCartCount" class="absolute -top-1 -right-1 bg-brand-gold text-surface-lowest font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md hidden">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- COMPACT MOBILE WELCOME BANNER -->
+    <section class="px-4 pt-3 pb-2">
+      <div class="rounded-2xl p-3.5 bg-gradient-to-r from-surface-card via-surface-card to-surface-high border border-surface-high/70 flex items-center justify-between gap-3 shadow-md">
+        <div class="flex flex-col">
+          <div class="flex items-center gap-1.5 mb-1">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-veg-green/15 text-veg-green border border-veg-green/30 uppercase tracking-wider">100% Pure Veg</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-brand-gold/15 text-brand-gold border border-brand-gold/30 uppercase tracking-wider">No Ajinomoto</span>
+          </div>
+          <h1 class="font-title text-base font-bold text-on-surface leading-tight">
+            Order Directly from Your Table
+          </h1>
+          <p class="text-[11px] text-on-muted leading-tight mt-0.5">
+            Fresh sigri chaap, stone pizzas, marines &amp; thick shakes.
+          </p>
+        </div>
+        <div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 ring-1 ring-brand-gold/30 shadow-inner">
+          <img src="logo.jpg" alt="Mascot" class="w-full h-full object-cover">
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH BAR -->
+    <div class="px-4 py-1.5 sticky top-[60px] z-30 bg-background/95 backdrop-blur-sm">
+      <div class="relative w-full">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-brand-gold text-[18px]">search</span>
+        <input 
+          type="text" 
+          id="menuSearch" 
+          oninput="filterMenuItems()" 
+          placeholder="Search burger, chaap, pizza, shake..." 
+          class="w-full bg-surface-card text-on-surface text-xs pl-9 pr-8 py-2.5 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold placeholder:text-on-muted"
+        >
+        <button id="clearSearchBtn" onclick="clearSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-muted hover:text-on-surface hidden">
+          <span class="material-symbols-outlined text-[16px]">close</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- HORIZONTAL CATEGORY SCROLLER PILLS -->
+    <div class="sticky top-[108px] z-30 bg-background/95 backdrop-blur-md border-b border-surface-high/60 py-2 px-4 shadow-md">
+      <nav class="flex items-center gap-1.5 overflow-x-auto scrollbar-none" id="categoryNav">
+        <button class="cat-pill active px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-brand-gold text-surface-lowest shadow-sm transition-all" onclick="scrollToCategory('sec-burger', this)">🍔 Burger</button>
+        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-sandwich', this)">🥪 Sandwich</button>
+        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-wraps', this)">🌯 Wraps</button>
+        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-marine', this)">⭐ Marine</button>
+        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-pasta', this)">🍝 Pasta</button>
+        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-chaap', this)">🔥 Chaap</button>
+        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-chinese', this)">🥢 Chinese</button>
+        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-salad', this)">🥗 Salad</button>
+        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-fries', this)">🍟 Fries</button>
+        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-pizza', this)">🍕 Pizza</button>
+        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-shake', this)">🥤 Shakes</button>
+        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-mocktail', this)">🍹 Mocktails</button>
+        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-slush', this)">🍧 Slush</button>
+      </nav>
+    </div>
+
+    <!-- MAIN MENU LIST -->
+    <main class="px-4 py-3 flex flex-col gap-6" id="menuContainer">
+
+      <!-- 01. BURGER -->
+      <section class="menu-section scroll-mt-36" id="sec-burger" data-cat="burger">
+        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">01</span>
+            <h2 class="font-title font-bold text-lg text-on-surface">BURGER</h2>
+          </div>
+          <span class="text-[11px] text-on-muted">14 Varieties</span>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-burger"></div>
+      </section>
+
+      <!-- 02. SANDWICH -->
+      <section class="menu-section scroll-mt-36" id="sec-sandwich" data-cat="sandwich">
+        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">02</span>
+            <h2 class="font-title font-bold text-lg text-on-surface">SANDWICH</h2>
+          </div>
+          <span class="text-[11px] text-on-muted">Pressed &amp; Grilled</span>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-sandwich"></div>
+      </section>
+
+      <!-- 03. WRAPS -->
+      <section class="menu-section scroll-mt-36" id="sec-wraps" data-cat="wraps">
+        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">03</span>
+            <h2 class="font-title font-bold text-lg text-on-surface">WRAPS</h2>
+          </div>
+          <span class="text-[11px] text-on-muted">Flame Rolled</span>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-wraps"></div>
+      </section>
+
+      <!-- 04. MARINE -->
+      <section class="menu-section scroll-mt-36" id="sec-marine" data-cat="marine">
+        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">04</span>
+            <h2 class="font-title font-bold text-lg text-on-surface">MARINE</h2>
+          </div>
+          <span class="text-[10px] text-brand-gold font-bold uppercase tracking-wider bg-surface-card px-2 py-0.5 rounded">House Specialty</span>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-marine"></div>
+      </section>
+
+      <!-- 05. PASTA -->
+      <section class="menu-section scroll-mt-36" id="sec-pasta" data-cat="pasta">
+        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">05</span>
+            <h2 class="font-title font-bold text-lg text-on-surface">PASTA</h2>
+          </div>
+          <span class="text-[11px] text-brand-gold">Half / Full Portions</span>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-pasta"></div>
+      </section>
+
+      <!-- 06. CHAAP -->
+      <section class="menu-section scroll-mt-36" id="sec-chaap" data-cat="chaap">
+        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">06</span>
+            <h2 class="font-title font-bold text-lg text-on-surface">CHAAP &amp; TANDOOR</h2>
+          </div>
+          <span class="text-[11px] text-brand-gold">Sigri Roasted</span>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-chaap"></div>
+      </section>
+
+      <!-- 07. CHINESE -->
+      <section class="menu-section scroll-mt-36" id="sec-chinese" data-cat="chinese">
+        <div class="flex flex-col pb-1.5 mb-2 border-b border-surface-high gap-0.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">07</span>
+              <h2 class="font-title font-bold text-lg text-on-surface">CHINESE</h2>
+            </div>
+            <span class="text-[10px] text-veg-green font-bold uppercase tracking-wider bg-veg-green/10 px-2 py-0.5 rounded border border-veg-green/30">Without Ajinomoto</span>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-chinese"></div>
+      </section>
+
+      <!-- 08. SALAD -->
+      <section class="menu-section scroll-mt-36" id="sec-salad" data-cat="salad">
+        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">08</span>
+            <h2 class="font-title font-bold text-lg text-on-surface">SALAD</h2>
+          </div>
+          <span class="text-[11px] text-on-muted">Fresh Garden</span>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-salad"></div>
+      </section>
+
+      <!-- 09. FRIES -->
+      <section class="menu-section scroll-mt-36" id="sec-fries" data-cat="fries">
+        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">09</span>
+            <h2 class="font-title font-bold text-lg text-on-surface">FRIES &amp; BITES</h2>
+          </div>
+          <span class="text-[11px] text-brand-gold">S / M / L Portions</span>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-fries"></div>
+      </section>
+
+      <!-- 10. PIZZA -->
+      <section class="menu-section scroll-mt-36" id="sec-pizza" data-cat="pizza">
+        <div class="flex flex-col pb-1.5 mb-2 border-b border-surface-high gap-1.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">10</span>
+              <h2 class="font-title font-bold text-lg text-on-surface">PIZZA</h2>
+            </div>
+            <span class="text-[11px] text-brand-gold">Reg / Large</span>
+          </div>
+          <div class="p-2 rounded-lg bg-surface-card border border-brand-gold/20 text-[11px] text-brand-gold leading-tight">
+            🔥 <strong>Flavour Upgrade:</strong> Pay ₹10 &amp; ₹20 extra for Makhani, Achari &amp; Tandoori flavours!
+          </div>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-pizza"></div>
+      </section>
+
+      <!-- 11. SHAKE -->
+      <section class="menu-section scroll-mt-36" id="sec-shake" data-cat="shake">
+        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">11</span>
+            <h2 class="font-title font-bold text-lg text-on-surface">SHAKE</h2>
+          </div>
+          <span class="text-[11px] text-on-muted">Thick Dairy Shakes</span>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-shake"></div>
+      </section>
+
+      <!-- 12. MOCKTAIL -->
+      <section class="menu-section scroll-mt-36" id="sec-mocktail" data-cat="mocktail">
+        <div class="flex flex-col pb-1.5 mb-2 border-b border-surface-high gap-0.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">12</span>
+              <h2 class="font-title font-bold text-lg text-on-surface">MOCKTAIL &amp; COOLERS</h2>
+            </div>
+            <span class="text-xs font-bold text-brand-gold">₹80 each</span>
+          </div>
+          <span class="text-[10px] text-on-muted italic">*All branded beverages served at printed MRP.</span>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-mocktail"></div>
+      </section>
+
+      <!-- 13. SLUSH -->
+      <section class="menu-section scroll-mt-36" id="sec-slush" data-cat="slush">
+        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">13</span>
+            <h2 class="font-title font-bold text-lg text-on-surface">FROST SLUSH</h2>
+          </div>
+          <span class="text-[11px] text-on-muted">Iced Flavours</span>
+        </div>
+        <div class="flex flex-col gap-2" id="grid-slush"></div>
+      </section>
+
+      <!-- INSTAGRAM QR CARD AT THE END OF MENU -->
+      <section class="mt-4 mb-2 p-5 rounded-2xl bg-gradient-to-b from-surface-card via-surface-card to-surface-high border border-surface-high text-center flex flex-col items-center gap-3.5 shadow-xl">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 flex items-center justify-center text-white shadow-sm">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+          <span class="font-title font-bold text-base text-on-surface">Scan &amp; Follow Us on Instagram</span>
+        </div>
+        
+        <p class="text-[11px] text-on-muted leading-relaxed max-w-xs">
+          Scan the QR code below or tap to follow for secret chef specials, daily live hearth stories &amp; discounts!
+        </p>
+
+        <!-- Official Uploaded Instagram QR Code -->
+        <div class="w-52 h-52 rounded-2xl overflow-hidden p-2.5 bg-white shadow-2xl ring-4 ring-pink-500/20 border border-gray-200">
+          <img src="instagram-qr.jpg" alt="Instagram QR Code @GRILLISLAND18" class="w-full h-full object-contain">
+        </div>
+
+        <div class="flex flex-col items-center gap-1">
+          <span class="font-bold text-brand-gold text-base tracking-wider">@GRILLISLAND18</span>
+          <span class="text-[11px] text-on-muted">Grill Island &bull; Phagwara</span>
+        </div>
+
+        <a href="https://instagram.com/grillisland18" target="_blank" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-pink-600/25 active:scale-[0.98] transition-all">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          Open &amp; Follow @GRILLISLAND18
+        </a>
+      </section>
+
+    </main>
+
+    <!-- COMPACT MOBILE FOOTER -->
+    <footer class="mt-4 pt-6 pb-20 px-4 border-t border-surface-high text-center flex flex-col items-center gap-2.5">
+      <div class="w-10 h-10 rounded-full overflow-hidden ring-1 ring-brand-gold/50 bg-surface-card">
+        <img src="logo.jpg" alt="Logo" class="w-full h-full object-cover">
+      </div>
+      <div class="flex flex-col">
+        <span class="font-title font-bold text-sm text-brand-gold">GRILL ISLAND &bull; PHAGWARA</span>
+        <span class="text-[11px] text-on-muted">Road, Raja Garden Colony, Phagwara, Punjab</span>
+        <a href="tel:+919855381984" class="text-xs text-brand-gold font-semibold mt-1">📞 +91 98553 81984</a>
+      </div>
+      <div class="flex items-center justify-center gap-3 text-xs text-brand-gold pt-1">
+        <a href="https://instagram.com/grillisland18" target="_blank" class="hover:underline">@GRILLISLAND18</a>
+        <span>&bull;</span>
+        <a href="https://instagram.com/grill.island" target="_blank" class="hover:underline">@grill.island</a>
+      </div>
+      <span class="text-[10px] text-on-muted">&copy; 2025 Grill Island. 100% Pure Veg &bull; No Added GST.</span>
+    </footer>
+
+    <!-- STICKY FLOATING APP CART BAR (Appears when items > 0) -->
+    <div id="stickyCartBar" class="fixed bottom-0 left-0 right-0 z-40 p-3 pointer-events-none transition-all duration-300 transform translate-y-24 opacity-0">
+      <div class="max-w-lg mx-auto pointer-events-auto">
+        <button onclick="openCartModal()" class="w-full bg-gradient-to-r from-brand-amber via-brand-amber to-brand-gold text-surface-lowest px-4 py-3 rounded-2xl shadow-2xl flex items-center justify-between font-bold active:scale-[0.98] transition-transform">
+          <div class="flex items-center gap-2.5">
+            <span class="bg-surface-lowest text-brand-gold px-2 py-0.5 rounded-lg text-xs" id="stickyCount">0 items</span>
+            <span class="text-sm tracking-tight text-surface-lowest" id="stickyTotal">₹0.00</span>
+          </div>
+          <div class="flex items-center gap-1 text-xs uppercase tracking-wider">
+            <span>View Tray &amp; Order</span>
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- NATIVE-LIKE SLIDE-UP BOTTOM SHEET FOR CART / CHECKOUT (NO GST) -->
+    <div id="cartModal" class="fixed inset-0 z-50 modal-backdrop hidden flex flex-col justify-end" onclick="closeCartModal(event)">
+      <div class="w-full max-w-lg mx-auto bg-surface-card rounded-t-3xl border-t border-surface-high p-4 flex flex-col max-h-[85vh] shadow-2xl animate-in slide-in-from-bottom duration-300" onclick="event.stopPropagation()">
+        
+        <!-- Header Handle & Title -->
+        <div class="flex flex-col items-center mb-3">
+          <div class="w-10 h-1 bg-surface-highest rounded-full mb-3"></div>
+          <div class="w-full flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-brand-gold text-[20px]">room_service</span>
+              <h3 class="font-title font-bold text-base text-on-surface">Your Table Tray</h3>
+              <span class="text-[11px] bg-brand-gold text-surface-lowest font-bold px-2 py-0.5 rounded-full" id="modalCountBadge">0 items</span>
+            </div>
+            <button onclick="closeCartModal()" class="w-8 h-8 rounded-full bg-surface-high flex items-center justify-center text-on-muted hover:text-on-surface">
+              <span class="material-symbols-outlined text-[18px]">close</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Table No. Input -->
+        <div class="mb-3">
+          <div class="flex items-center gap-2 p-2 rounded-xl bg-surface-low border border-surface-high">
+            <span class="material-symbols-outlined text-brand-gold text-[18px]">table_restaurant</span>
+            <input 
+              type="text" 
+              id="tableInput" 
+              placeholder="Table Number (e.g. Table 4 / Counter)" 
+              class="w-full bg-transparent text-xs text-on-surface placeholder:text-on-muted focus:outline-none"
+            >
+          </div>
+        </div>
+
+        <!-- Scrollable Order Item List -->
+        <div class="flex flex-col gap-2 overflow-y-auto max-h-[35vh] pr-1 py-1" id="modalCartList"></div>
+
+        <!-- Billing Summary (Clean - NO GST) -->
+        <div class="border-t border-surface-high pt-2.5 mt-2 flex flex-col gap-1 text-xs">
+          <div class="flex justify-between text-on-muted">
+            <span>Item Subtotal</span>
+            <span class="text-on-surface font-semibold" id="modalSubtotal">₹0.00</span>
+          </div>
+          <div class="flex justify-between text-sm font-bold text-brand-gold pt-1.5 border-t border-surface-high/60">
+            <span>Total Payable</span>
+            <span id="modalGrandTotal">₹0.00</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col gap-2 mt-3 pt-1">
+          <button onclick="sendOrderWhatsApp()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
+            <span class="material-symbols-outlined text-[18px]">send</span>
+            Send Order via WhatsApp (+91 98553 81984)
+          </button>
+          <button onclick="handleDirectKitchenOrder()" class="w-full py-2.5 bg-surface-high hover:bg-surface-highest text-brand-gold font-bold text-xs uppercase tracking-wider rounded-xl border border-brand-gold/30 flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all">
+            <span class="material-symbols-outlined text-[18px]">dinner_dining</span>
+            Direct Kitchen Bell
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ALWAYS-ASK INSTAGRAM FOLLOW MODAL (FOLLOW OR DISMISS) -->
+    <div id="instaFollowModal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4" onclick="dismissInstaPrompt(event)">
+      <div class="w-full max-w-sm bg-surface-card rounded-3xl border border-surface-high p-5 flex flex-col items-center text-center shadow-2xl relative animate-in fade-in zoom-in-95 duration-200" onclick="event.stopPropagation()">
+        
+        <!-- Top Close Button -->
+        <button onclick="dismissInstaPrompt()" class="absolute top-4 right-4 w-7 h-7 rounded-full bg-surface-high flex items-center justify-center text-on-muted hover:text-on-surface">
+          <span class="material-symbols-outlined text-[16px]">close</span>
+        </button>
+
+        <!-- Instagram Animated Icon Badge -->
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 flex items-center justify-center text-white shadow-xl shadow-pink-500/30 mb-3 insta-pulse">
+          <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+
+        <h3 class="font-title font-bold text-lg text-on-surface mb-1">
+          Follow Grill Island
+        </h3>
+        
+        <p class="text-xs text-on-muted leading-relaxed mb-3">
+          Follow <strong class="text-brand-gold">@GRILLISLAND18</strong> for daily live grill stories, special menu drops &amp; offers!
+        </p>
+
+        <!-- Instagram QR Code Preview inside modal -->
+        <div class="w-32 h-32 rounded-xl overflow-hidden p-1.5 bg-white shadow-lg mb-4 ring-2 ring-pink-500/20">
+          <img src="instagram-qr.jpg" alt="Instagram QR Code" class="w-full h-full object-contain">
+        </div>
+
+        <!-- Follow & Dismiss Options -->
+        <div class="w-full flex flex-col gap-2">
+          <button onclick="handleFollowInstagram()" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-95 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2 active:scale-95 transition-all">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            Follow @GRILLISLAND18
+          </button>
+          
+          <button onclick="dismissInstaPrompt()" class="w-full py-2.5 rounded-xl bg-surface-high hover:bg-surface-highest text-on-muted hover:text-on-surface font-semibold text-xs active:scale-95 transition-all">
+            Dismiss
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COMPLETE MENU DATA & JAVASCRIPT CONTROLLERS -->
+  <script>
+    const MENU_DATA = {
+      burger: [
+        { name: "Veg. Burger", price: 50 },
+        { name: "Creamy Burger", price: 60 },
+        { name: "Super Veggie Burger", price: 70 },
+        { name: "Makhani Burger", price: 70 },
+        { name: "Cheesy Spicy Burger", price: 70 },
+        { name: "Soya Grill Burger", price: 70 },
+        { name: "Achari Burger", price: 70 },
+        { name: "Cheese Corn Burger", price: 70 },
+        { name: "Paneer Tikka Burger", price: 100 },
+        { name: "Paneer Makhani Burger", price: 100 },
+        { name: "Achari Paneer Burger", price: 100 },
+        { name: "Peppy Paneer Burger", price: 100 },
+        { name: "Crispy Paneer Burger", price: 100 },
+        { name: "Grill Island Special Burger", price: 100 }
+      ],
+      sandwich: [
+        { name: "Corn Masala Sandwich", price: 80 },
+        { name: "Veg. Grill Sandwich", price: 100 },
+        { name: "Soya Grill Sandwich", price: 120 },
+        { name: "Cheese Corn Sandwich", price: 120 },
+        { name: "Veg Cheese Sandwich", price: 120 },
+        { name: "Cheesy Spicy Sandwich", price: 120 },
+        { name: "Cheesy Pasta Sandwich", price: 120 },
+        { name: "Grill Island Special Sandwich", price: 140 },
+        { name: "Peri Peri Cottage Cheese Sandwich", price: 140 },
+        { name: "Paneer Tikka Sandwich", price: 140 },
+        { name: "Paneer Makhani Sandwich", price: 140 },
+        { name: "Achari Paneer Sandwich", price: 140 },
+        { name: "Double Decker Sandwich", price: 180 }
+      ],
+      wraps: [
+        { name: "Veg. Wrap", price: 90 },
+        { name: "Cheese Corn Wrap", price: 110 },
+        { name: "Cheesy Spicy Wrap", price: 110 },
+        { name: "Achari Wrap", price: 110 },
+        { name: "Makhani Wrap", price: 110 },
+        { name: "Soya Grill Wrap", price: 110 },
+        { name: "Grill Island Special Wrap", price: 120 },
+        { name: "Paneer Tikka Wrap", price: 130 },
+        { name: "Cheese Chilly Wrap", price: 130 },
+        { name: "Paneer Makhani Wrap", price: 130 },
+        { name: "Achari Paneer Wrap", price: 130 },
+        { name: "Crispy Paneer Wrap", price: 130 }
+      ],
+      marine: [
+        { name: "Veg. Grill Marine", price: 80 },
+        { name: "Cheese Corn Marine", price: 90 },
+        { name: "Cheesy Spicy Marine", price: 90 },
+        { name: "Makhani Marine", price: 90 },
+        { name: "Achari Marine", price: 90 },
+        { name: "Soya Grill Marine", price: 100 },
+        { name: "Grill Island Special Marine", price: 100 },
+        { name: "Paneer Tikka Marine", price: 110 },
+        { name: "Paneer Makhani Marine", price: 110 },
+        { name: "Achari Paneer Marine", price: 110 },
+        { name: "Crispy Paneer Marine", price: 120 }
+      ],
+      pasta: [
+        { name: "Red Sauce Pasta", variants: [{ label: "Half", price: 120 }, { label: "Full", price: 180 }] },
+        { name: "White Sauce Pasta", variants: [{ label: "Half", price: 120 }, { label: "Full", price: 180 }] },
+        { name: "Makhani Pasta", variants: [{ label: "Half", price: 140 }, { label: "Full", price: 200 }] },
+        { name: "Achari Pasta", variants: [{ label: "Half", price: 140 }, { label: "Full", price: 200 }] },
+        { name: "Mix Sauce Pasta", variants: [{ label: "Half", price: 140 }, { label: "Full", price: 200 }] },
+        { name: "Baked Cheese Pasta", variants: [{ label: "Half", price: 160 }, { label: "Full", price: 220 }] }
+      ],
+      chaap: [
+        { name: "Masala Chaap", variants: [{ label: "Half", price: 120 }, { label: "Full", price: 220 }] },
+        { name: "Malai Chaap", variants: [{ label: "Half", price: 120 }, { label: "Full", price: 220 }] },
+        { name: "Afgani Chaap", variants: [{ label: "Half", price: 120 }, { label: "Full", price: 220 }] },
+        { name: "Peri Peri Chaap", variants: [{ label: "Half", price: 120 }, { label: "Full", price: 220 }] },
+        { name: "Makhani Chaap", variants: [{ label: "Half", price: 120 }, { label: "Full", price: 220 }] },
+        { name: "Achari Chaap", variants: [{ label: "Half", price: 120 }, { label: "Full", price: 220 }] },
+        { name: "Paneer Tikka", variants: [{ label: "Half", price: 140 }, { label: "Full", price: 220 }] }
+      ],
+      chinese: [
+        { name: "Manchurian", variants: [{ label: "Half", price: 100 }, { label: "Full", price: 180 }] },
+        { name: "Veg Noodles", variants: [{ label: "Half", price: 100 }, { label: "Full", price: 180 }] },
+        { name: "Chilli Garlic Noodles", variants: [{ label: "Half", price: 110 }, { label: "Full", price: 200 }] },
+        { name: "Garlic Noodles", variants: [{ label: "Half", price: 110 }, { label: "Full", price: 200 }] },
+        { name: "Cheese Noodles", variants: [{ label: "Half", price: 130 }, { label: "Full", price: 220 }] },
+        { name: "Cheese Chilli", variants: [{ label: "Half", price: 140 }, { label: "Full", price: 250 }] },
+        { name: "Crispy Corn", price: 130 },
+        { name: "Crispy Paneer Corn", price: 160 },
+        { name: "Honey Chilli Potato", price: 120 }
+      ],
+      salad: [
+        { name: "Veg Salad", price: 120 },
+        { name: "Paneer Salad", price: 150 }
+      ],
+      fries: [
+        { name: "French Fries", variants: [{ label: "S", price: 50 }, { label: "M", price: 70 }, { label: "L", price: 90 }] },
+        { name: "Peri Peri Fries", variants: [{ label: "S", price: 60 }, { label: "M", price: 80 }, { label: "L", price: 100 }] },
+        { name: "Seasoning Fries", variants: [{ label: "S", price: 60 }, { label: "M", price: 80 }, { label: "L", price: 100 }] },
+        { name: "Black Pepper Fries", variants: [{ label: "S", price: 60 }, { label: "M", price: 80 }, { label: "L", price: 100 }] },
+        { name: "Soya Fries", price: 120 },
+        { name: "Cheesy Fries", price: 130 },
+        { name: "Crispy Paneer Fries", price: 200 },
+        { name: "Cheese Finger (8 Pc)", price: 170 }
+      ],
+      pizza: [
+        { name: "Margarita Pizza", variants: [{ label: "Reg", price: 160 }, { label: "Large", price: 270 }] },
+        { name: "Onion Pizza", variants: [{ label: "Reg", price: 130 }, { label: "Large", price: 240 }] },
+        { name: "Tomato Pizza", variants: [{ label: "Reg", price: 130 }, { label: "Large", price: 240 }] },
+        { name: "Capsicum Pizza", variants: [{ label: "Reg", price: 130 }, { label: "Large", price: 240 }] },
+        { name: "Veg. Pizza", variants: [{ label: "Reg", price: 160 }, { label: "Large", price: 270 }] },
+        { name: "Farm House Pizza", variants: [{ label: "Reg", price: 180 }, { label: "Large", price: 320 }] },
+        { name: "Cheese Corn Pizza", variants: [{ label: "Reg", price: 170 }, { label: "Large", price: 300 }] },
+        { name: "Seven Farm House Pizza", variants: [{ label: "Reg", price: 200 }, { label: "Large", price: 350 }] },
+        { name: "Tandoori Chaap Pizza", variants: [{ label: "Reg", price: 180 }, { label: "Large", price: 320 }] },
+        { name: "Paneer Makhani Pizza", variants: [{ label: "Reg", price: 200 }, { label: "Large", price: 350 }] },
+        { name: "Paneer Tikka Pizza", variants: [{ label: "Reg", price: 200 }, { label: "Large", price: 350 }] }
+      ],
+      shake: [
+        { name: "Strawberry Shake", price: 100 },
+        { name: "Mango Shake", price: 100 },
+        { name: "Vanilla Shake", price: 100 },
+        { name: "Butter Scotch Shake", price: 100 },
+        { name: "Chocolate Shake", price: 100 },
+        { name: "Cold Coffee", price: 100 },
+        { name: "Vanilla Cold Coffee", price: 110 },
+        { name: "Oreo Shake", price: 120 },
+        { name: "Kit Kat Shake", price: 120 },
+        { name: "Black Currant Shake", price: 120 }
+      ],
+      mocktail: [
+        { name: "Mint Mojito", price: 80 },
+        { name: "Blue Curacao", price: 80 },
+        { name: "Watermelon", price: 80 },
+        { name: "Green Apple", price: 80 },
+        { name: "Ice Tea", price: 80 },
+        { name: "Kala Khatta", price: 80 },
+        { name: "Peach", price: 80 },
+        { name: "Blueberry", price: 80 }
+      ],
+      slush: [
+        { name: "Mango", price: 90 },
+        { name: "Orange", price: 90 },
+        { name: "Strawberry", price: 90 },
+        { name: "Mango Strawberry", price: 100 },
+        { name: "Orange Blue Curacao", price: 100 }
+      ]
+    };
+
+    // CART STATE
+    const cart = {};
+
+    function renderPhoneMenus() {
+      for (const [category, items] of Object.entries(MENU_DATA)) {
+        const grid = document.getElementById(`grid-${category}`);
+        if (!grid) continue;
+
+        let html = '';
+        items.forEach(item => {
+          if (item.variants) {
+            // Variant based (Half/Full, S/M/L, Reg/Large)
+            const chipsHtml = item.variants.map(v => {
+              const fullItemName = `${item.name} (${v.label})`;
+              const currentQty = cart[fullItemName]?.qty || 0;
+              return `
+                <div class="flex items-center gap-1 bg-surface-high/60 rounded-lg p-1 border border-surface-highest/60">
+                  <span class="text-[11px] font-bold text-on-surface px-1">${v.label} <span class="text-brand-gold">₹${v.price}</span></span>
+                  ${currentQty > 0 ? `
+                    <div class="flex items-center bg-brand-gold text-surface-lowest rounded-md font-bold text-xs px-1">
+                      <button onclick="changeQty('${fullItemName}', -1)" class="px-1 py-0.5 active:scale-90">-</button>
+                      <span class="px-1 text-[11px]">${currentQty}</span>
+                      <button onclick="changeQty('${fullItemName}', 1)" class="px-1 py-0.5 active:scale-90">+</button>
+                    </div>
+                  ` : `
+                    <button onclick="addToOrder('${fullItemName}', ${v.price})" class="px-2 py-0.5 bg-brand-gold/15 hover:bg-brand-gold text-brand-gold hover:text-surface-lowest rounded-md text-[11px] font-bold border border-brand-gold/30 active:scale-95 transition-all">
+                      + Add
+                    </button>
+                  `}
+                </div>
+              `;
+            }).join('');
+
+            html += `
+              <div class="menu-card bg-surface-card p-3 rounded-2xl border border-surface-high flex flex-col gap-2" data-name="${item.name.toLowerCase()}">
+                <div class="flex items-center gap-2">
+                  <span class="w-3.5 h-3.5 rounded-[3px] border border-green-600 flex items-center justify-center p-[1px] shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                  </span>
+                  <span class="font-bold text-xs text-on-surface leading-tight">${item.name}</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-1.5 justify-end pt-1">
+                  ${chipsHtml}
+                </div>
+              </div>
+            `;
+          } else {
+            // Single price item
+            const currentQty = cart[item.name]?.qty || 0;
+            html += `
+              <div class="menu-card bg-surface-card p-3 rounded-2xl border border-surface-high flex items-center justify-between gap-2" data-name="${item.name.toLowerCase()}">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="w-3.5 h-3.5 rounded-[3px] border border-green-600 flex items-center justify-center p-[1px] shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                  </span>
+                  <div class="flex flex-col min-w-0">
+                    <span class="font-bold text-xs text-on-surface truncate leading-tight">${item.name}</span>
+                    <span class="font-bold text-brand-gold text-xs">₹${item.price}</span>
+                  </div>
+                </div>
+                
+                <div class="shrink-0">
+                  ${currentQty > 0 ? `
+                    <div class="flex items-center bg-brand-gold text-surface-lowest rounded-xl font-bold text-xs px-2 py-1 shadow-sm">
+                      <button onclick="changeQty('${item.name}', -1)" class="px-1.5 py-0.5 active:scale-90">-</button>
+                      <span class="px-2 text-xs">${currentQty}</span>
+                      <button onclick="changeQty('${item.name}', 1)" class="px-1.5 py-0.5 active:scale-90">+</button>
+                    </div>
+                  ` : `
+                    <button onclick="addToOrder('${item.name}', ${item.price})" class="px-3.5 py-1.5 bg-brand-gold/15 hover:bg-brand-gold text-brand-gold hover:text-surface-lowest font-bold text-xs rounded-xl border border-brand-gold/30 flex items-center gap-1 active:scale-95 transition-all">
+                      <span class="material-symbols-outlined text-[14px]">add</span> Add
+                    </button>
+                  `}
+                </div>
+              </div>
+            `;
+          }
+        });
+        grid.innerHTML = html;
+      }
+    }
+
+    function addToOrder(name, price) {
+      if (cart[name]) {
+        cart[name].qty += 1;
+      } else {
+        cart[name] = { price: Number(price), qty: 1 };
+      }
+      updateCartUI();
+      renderPhoneMenus();
+      showPhoneToast(name);
+    }
+
+    function changeQty(name, delta) {
+      if (!cart[name]) return;
+      cart[name].qty += delta;
+      if (cart[name].qty <= 0) {
+        delete cart[name];
+      }
+      updateCartUI();
+      renderPhoneMenus();
+    }
+
+    function updateCartUI() {
+      const keys = Object.keys(cart);
+      let totalQty = 0;
+      let subtotal = 0;
+
+      keys.forEach(k => {
+        subtotal += cart[k].price * cart[k].qty;
+        totalQty += cart[k].qty;
+      });
+
+      // NO GST - TOTAL IS EXACT SUBTOTAL
+      const grandTotal = subtotal;
+
+      // Header cart badge
+      const headerBadge = document.getElementById('headerCartCount');
+      if (totalQty > 0) {
+        headerBadge.textContent = totalQty;
+        headerBadge.classList.remove('hidden');
+      } else {
+        headerBadge.classList.add('hidden');
+      }
+
+      // Bottom floating bar
+      const stickyBar = document.getElementById('stickyCartBar');
+      const stickyCount = document.getElementById('stickyCount');
+      const stickyTotal = document.getElementById('stickyTotal');
+
+      if (totalQty > 0) {
+        stickyBar.classList.remove('translate-y-24', 'opacity-0');
+        stickyCount.textContent = `${totalQty} item${totalQty > 1 ? 's' : ''}`;
+        stickyTotal.textContent = `₹${grandTotal.toFixed(2)}`;
+      } else {
+        stickyBar.classList.add('translate-y-24', 'opacity-0');
+        closeCartModal();
+      }
+
+      // Render Modal list
+      renderModalCart(keys, totalQty, grandTotal);
+    }
+
+    function renderModalCart(keys, totalQty, grandTotal) {
+      const list = document.getElementById('modalCartList');
+      const countBadge = document.getElementById('modalCountBadge');
+      countBadge.textContent = `${totalQty} items`;
+
+      if (keys.length === 0) {
+        list.innerHTML = `
+          <div class="py-6 text-center text-on-muted text-xs">
+            Your tray is currently empty.
+          </div>
+        `;
+        document.getElementById('modalSubtotal').textContent = '₹0.00';
+        document.getElementById('modalGrandTotal').textContent = '₹0.00';
+        return;
+      }
+
+      let html = '';
+      keys.forEach(name => {
+        const item = cart[name];
+        const lineTotal = item.price * item.qty;
+        html += `
+          <div class="flex items-center justify-between p-2 rounded-xl bg-surface-low border border-surface-high">
+            <div class="flex flex-col min-w-0 pr-2">
+              <span class="font-bold text-xs text-on-surface truncate">${name}</span>
+              <span class="text-[11px] text-brand-gold">₹${item.price} each</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <div class="flex items-center bg-surface-high rounded-lg px-1">
+                <button onclick="changeQty('${name}', -1)" class="text-on-muted hover:text-on-surface px-1.5 py-0.5 font-bold text-xs">-</button>
+                <span class="font-bold text-on-surface px-1 text-xs">${item.qty}</span>
+                <button onclick="changeQty('${name}', 1)" class="text-on-muted hover:text-on-surface px-1.5 py-0.5 font-bold text-xs">+</button>
+              </div>
+              <span class="font-bold text-xs w-12 text-right">₹${lineTotal}</span>
+            </div>
+          </div>
+        `;
+      });
+
+      list.innerHTML = html;
+      document.getElementById('modalSubtotal').textContent = `₹${grandTotal.toFixed(2)}`;
+      document.getElementById('modalGrandTotal').textContent = `₹${grandTotal.toFixed(2)}`;
+    }
+
+    function openCartModal() {
+      const modal = document.getElementById('cartModal');
+      modal.classList.remove('hidden');
+    }
+
+    function closeCartModal() {
+      const modal = document.getElementById('cartModal');
+      modal.classList.add('hidden');
+    }
+
+    function scrollToCategory(id, btn) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+      document.querySelectorAll('.cat-pill').forEach(p => {
+        p.classList.remove('bg-brand-gold', 'text-surface-lowest', 'active');
+        p.classList.add('bg-surface-card', 'text-on-muted');
+      });
+      if (btn) {
+        btn.classList.add('bg-brand-gold', 'text-surface-lowest', 'active');
+        btn.classList.remove('bg-surface-card', 'text-on-muted');
+      }
+    }
+
+    function filterMenuItems() {
+      const query = document.getElementById('menuSearch').value.toLowerCase().trim();
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (query.length > 0) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+
+      const cards = document.querySelectorAll('.menu-card');
+      const sections = document.querySelectorAll('.menu-section');
+
+      cards.forEach(c => {
+        const name = c.getAttribute('data-name') || '';
+        if (name.includes(query)) {
+          c.style.display = '';
+        } else {
+          c.style.display = 'none';
+        }
+      });
+
+      sections.forEach(s => {
+        const visible = s.querySelectorAll('.menu-card:not([style*="display: none"])');
+        if (visible.length === 0 && query !== '') {
+          s.style.display = 'none';
+        } else {
+          s.style.display = '';
+        }
+      });
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('menuSearch');
+      input.value = '';
+      filterMenuItems();
+      input.focus();
+    }
+
+    function showPhoneToast(name) {
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-brand-gold text-surface-lowest px-4 py-2 rounded-full shadow-2xl text-xs font-bold flex items-center gap-1.5 transition-all duration-200';
+      toast.innerHTML = `<span class="material-symbols-outlined text-[16px]">check_circle</span> Added <strong>${name}</strong>`;
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translate(-50%, -10px)';
+        setTimeout(() => toast.remove(), 250);
+      }, 1200);
+    }
+
+    // WHATSAPP ORDER (NO GST)
+    function sendOrderWhatsApp() {
+      const keys = Object.keys(cart);
+      if (keys.length === 0) {
+        alert('Your tray is empty! Please add dishes first.');
+        return;
+      }
+      const table = document.getElementById('tableInput').value.trim() || 'Dine-In Table';
+      let message = `*GRILL ISLAND PHAGWARA - TABLE ORDER*\n`;
+      message += `📍 Table/Counter: ${table}\n\n`;
+      message += `*ORDER ITEMS:*\n`;
+
+      let total = 0;
+      keys.forEach((name, idx) => {
+        const item = cart[name];
+        const line = item.price * item.qty;
+        total += line;
+        message += `${idx + 1}. ${name} x ${item.qty} = ₹${line}\n`;
+      });
+
+      message += `\n*TOTAL PAYABLE:* ₹${total.toFixed(2)}\n`;
+      message += `\n_Live hearth order sent from table phone._`;
+
+      const url = `https://wa.me/919855381984?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+      
+      // Also show gentle Instagram prompt after ordering!
+      setTimeout(() => {
+        openInstaPrompt();
+      }, 1500);
+    }
+
+    function handleDirectKitchenOrder() {
+      const keys = Object.keys(cart);
+      if (keys.length === 0) {
+        alert('Please select dishes first!');
+        return;
+      }
+      const table = document.getElementById('tableInput').value.trim() || 'Table';
+      alert(`🛎️ Kitchen Bell Rang! Your order for ${table} has been queued at the live sigri hearth.`);
+      closeCartModal();
+      
+      // Also show gentle Instagram prompt after order bell
+      setTimeout(() => {
+        openInstaPrompt();
+      }, 1000);
+    }
+
+    // INSTAGRAM PROMPT CONTROLS (ALWAYS ASK: FOLLOW OR DISMISS)
+    function openInstaPrompt() {
+      const modal = document.getElementById('instaFollowModal');
+      modal.classList.remove('hidden');
+    }
+
+    function dismissInstaPrompt() {
+      const modal = document.getElementById('instaFollowModal');
+      modal.classList.add('hidden');
+    }
+
+    function handleFollowInstagram() {
+      window.open('https://instagram.com/grillisland18', '_blank');
+      dismissInstaPrompt();
+    }
+
+    // Auto-prompt to follow Instagram on phone load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderPhoneMenus();
+
+      // Show the Follow Instagram modal automatically after 1.8 seconds
+      setTimeout(() => {
+        openInstaPrompt();
+      }, 1800);
+    });
+  </script>
+</body>
+</html>
