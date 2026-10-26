@@ -29,10 +29,9 @@
       scrollbar-width: none;
     }
     .modal-backdrop {
-      background: rgba(0, 0, 0, 0.78);
-      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(6px);
     }
-    /* Subtle pulse animation for Instagram badge */
     @keyframes pulse-subtle {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.92; transform: scale(1.03); }
@@ -91,15 +90,22 @@
         </div>
       </div>
 
-      <!-- Right Header Actions (Follow Insta & Quick Cart) -->
-      <div class="flex items-center gap-2">
+      <!-- Right Header Actions (Insta, Admin Gear & Cart) -->
+      <div class="flex items-center gap-1.5">
+        <!-- Admin Settings Gear -->
+        <button onclick="openPinModal()" class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-high hover:bg-surface-highest text-on-muted hover:text-brand-gold border border-surface-highest active:scale-90 transition-all" title="Admin Settings">
+          <span class="material-symbols-outlined text-[17px]">settings</span>
+        </button>
+
+        <!-- Instagram Badge -->
         <button onclick="openInstaPrompt()" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-gradient-to-r from-purple-600/30 via-pink-600/30 to-amber-500/30 border border-pink-500/40 text-[11px] font-bold text-pink-300 hover:text-white transition-all active:scale-95">
           <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
           <span>Insta</span>
         </button>
 
-        <button onclick="openCartModal()" class="relative flex items-center justify-center w-10 h-10 rounded-full bg-surface-high hover:bg-surface-highest text-brand-gold border border-brand-gold/20 active:scale-95 transition-all">
-          <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+        <!-- Cart Button -->
+        <button onclick="openCartModal()" class="relative flex items-center justify-center w-9 h-9 rounded-full bg-surface-high hover:bg-surface-highest text-brand-gold border border-brand-gold/20 active:scale-95 transition-all">
+          <span class="material-symbols-outlined text-[19px]">shopping_bag</span>
           <span id="headerCartCount" class="absolute -top-1 -right-1 bg-brand-gold text-surface-lowest font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md hidden">0</span>
         </button>
       </div>
@@ -172,7 +178,7 @@
             <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">01</span>
             <h2 class="font-title font-bold text-lg text-on-surface">BURGER</h2>
           </div>
-          <span class="text-[11px] text-on-muted">14 Varieties</span>
+          <span class="text-[11px] text-on-muted item-count-badge"></span>
         </div>
         <div class="flex flex-col gap-2" id="grid-burger"></div>
       </section>
@@ -184,7 +190,7 @@
             <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">02</span>
             <h2 class="font-title font-bold text-lg text-on-surface">SANDWICH</h2>
           </div>
-          <span class="text-[11px] text-on-muted">Pressed &amp; Grilled</span>
+          <span class="text-[11px] text-on-muted item-count-badge"></span>
         </div>
         <div class="flex flex-col gap-2" id="grid-sandwich"></div>
       </section>
@@ -196,7 +202,7 @@
             <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">03</span>
             <h2 class="font-title font-bold text-lg text-on-surface">WRAPS</h2>
           </div>
-          <span class="text-[11px] text-on-muted">Flame Rolled</span>
+          <span class="text-[11px] text-on-muted item-count-badge"></span>
         </div>
         <div class="flex flex-col gap-2" id="grid-wraps"></div>
       </section>
@@ -377,6 +383,13 @@
         <span>&bull;</span>
         <a href="https://instagram.com/grill.island" target="_blank" class="hover:underline">@grill.island</a>
       </div>
+      
+      <!-- Staff Admin Portal Access Link in Footer -->
+      <button onclick="openPinModal()" class="text-[11px] text-on-muted hover:text-brand-gold underline underline-offset-4 flex items-center gap-1 mt-2 transition-colors">
+        <span class="material-symbols-outlined text-[14px]">lock</span>
+        Staff &bull; Owner Menu Settings (PIN: 0005)
+      </button>
+
       <span class="text-[10px] text-on-muted">&copy; 2025 Grill Island. 100% Pure Veg &bull; No Added GST.</span>
     </footer>
 
@@ -396,7 +409,7 @@
       </div>
     </div>
 
-    <!-- NATIVE-LIKE SLIDE-UP BOTTOM SHEET FOR CART / CHECKOUT (NO GST) -->
+    <!-- NATIVE-LIKE SLIDE-UP BOTTOM SHEET FOR CART / CHECKOUT (NO GST, DIRECT WHATSAPP) -->
     <div id="cartModal" class="fixed inset-0 z-50 modal-backdrop hidden flex flex-col justify-end" onclick="closeCartModal(event)">
       <div class="w-full max-w-lg mx-auto bg-surface-card rounded-t-3xl border-t border-surface-high p-4 flex flex-col max-h-[85vh] shadow-2xl animate-in slide-in-from-bottom duration-300" onclick="event.stopPropagation()">
         
@@ -429,7 +442,7 @@
         </div>
 
         <!-- Scrollable Order Item List -->
-        <div class="flex flex-col gap-2 overflow-y-auto max-h-[35vh] pr-1 py-1" id="modalCartList"></div>
+        <div class="flex flex-col gap-2 overflow-y-auto max-h-[38vh] pr-1 py-1" id="modalCartList"></div>
 
         <!-- Billing Summary (Clean - NO GST) -->
         <div class="border-t border-surface-high pt-2.5 mt-2 flex flex-col gap-1 text-xs">
@@ -443,15 +456,11 @@
           </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-col gap-2 mt-3 pt-1">
-          <button onclick="sendOrderWhatsApp()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
+        <!-- Action Button (Direct WhatsApp only - Kitchen Bell Removed) -->
+        <div class="mt-3 pt-1">
+          <button onclick="sendOrderWhatsApp()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-emerald-900/30 flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
             <span class="material-symbols-outlined text-[18px]">send</span>
             Send Order via WhatsApp (+91 98553 81984)
-          </button>
-          <button onclick="handleDirectKitchenOrder()" class="w-full py-2.5 bg-surface-high hover:bg-surface-highest text-brand-gold font-bold text-xs uppercase tracking-wider rounded-xl border border-brand-gold/30 flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all">
-            <span class="material-symbols-outlined text-[18px]">dinner_dining</span>
-            Direct Kitchen Bell
           </button>
         </div>
 
@@ -462,12 +471,10 @@
     <div id="instaFollowModal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4" onclick="dismissInstaPrompt(event)">
       <div class="w-full max-w-sm bg-surface-card rounded-3xl border border-surface-high p-5 flex flex-col items-center text-center shadow-2xl relative animate-in fade-in zoom-in-95 duration-200" onclick="event.stopPropagation()">
         
-        <!-- Top Close Button -->
         <button onclick="dismissInstaPrompt()" class="absolute top-4 right-4 w-7 h-7 rounded-full bg-surface-high flex items-center justify-center text-on-muted hover:text-on-surface">
           <span class="material-symbols-outlined text-[16px]">close</span>
         </button>
 
-        <!-- Instagram Animated Icon Badge -->
         <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 flex items-center justify-center text-white shadow-xl shadow-pink-500/30 mb-3 insta-pulse">
           <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
         </div>
@@ -480,12 +487,10 @@
           Follow <strong class="text-brand-gold">@GRILLISLAND18</strong> for daily live grill stories, special menu drops &amp; offers!
         </p>
 
-        <!-- Instagram QR Code Preview inside modal -->
         <div class="w-32 h-32 rounded-xl overflow-hidden p-1.5 bg-white shadow-lg mb-4 ring-2 ring-pink-500/20">
           <img src="./instagram-qr.jpg" alt="Instagram QR Code" class="w-full h-full object-contain">
         </div>
 
-        <!-- Follow & Dismiss Options -->
         <div class="w-full flex flex-col gap-2">
           <button onclick="handleFollowInstagram()" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-95 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2 active:scale-95 transition-all">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
@@ -500,11 +505,144 @@
       </div>
     </div>
 
+    <!-- 1. ADMIN PIN PROMPT MODAL (PIN: 0005) -->
+    <div id="pinModal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4" onclick="closePinModal(event)">
+      <div class="w-full max-w-xs bg-surface-card rounded-3xl border border-surface-high p-5 flex flex-col items-center text-center shadow-2xl relative animate-in fade-in zoom-in-95 duration-200" onclick="event.stopPropagation()">
+        
+        <button onclick="closePinModal()" class="absolute top-4 right-4 w-7 h-7 rounded-full bg-surface-high flex items-center justify-center text-on-muted hover:text-on-surface">
+          <span class="material-symbols-outlined text-[16px]">close</span>
+        </button>
+
+        <div class="w-12 h-12 rounded-2xl bg-brand-gold/15 text-brand-gold flex items-center justify-center mb-2.5 border border-brand-gold/30">
+          <span class="material-symbols-outlined text-[24px]">lock</span>
+        </div>
+
+        <h3 class="font-title font-bold text-base text-on-surface mb-0.5">Admin Security PIN</h3>
+        <p class="text-[11px] text-on-muted mb-3">Enter the 4-digit manager PIN to manage prices and menu items.</p>
+
+        <input 
+          type="password" 
+          id="adminPinInput" 
+          maxlength="4" 
+          inputmode="numeric" 
+          placeholder="••••" 
+          class="w-36 text-center text-xl tracking-[0.5em] font-mono py-2 rounded-xl bg-surface-low border border-surface-high text-brand-gold focus:outline-none focus:ring-2 focus:ring-brand-gold mb-2 placeholder:text-surface-highest"
+          onkeydown="if(event.key==='Enter') verifyAdminPin()"
+        >
+
+        <p id="pinErrorMsg" class="text-xs text-red-400 font-semibold mb-3 hidden">Incorrect PIN. Try again.</p>
+
+        <div class="w-full flex flex-col gap-1.5">
+          <button onclick="verifyAdminPin()" class="w-full py-2.5 bg-brand-gold hover:bg-brand-gold-light text-surface-lowest font-bold text-xs uppercase tracking-wider rounded-xl shadow-md active:scale-95 transition-all">
+            Unlock Admin Portal
+          </button>
+          <button onclick="closePinModal()" class="w-full py-2 rounded-xl bg-surface-high text-on-muted hover:text-on-surface text-xs font-semibold">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. FULL ADMIN MENU MANAGEMENT PORTAL -->
+    <div id="adminPortalModal" class="fixed inset-0 z-50 modal-backdrop hidden flex flex-col justify-end sm:justify-center p-0 sm:p-4" onclick="closeAdminPortal(event)">
+      <div class="w-full max-w-lg mx-auto bg-surface-card rounded-t-3xl sm:rounded-3xl border border-surface-high p-4 sm:p-5 flex flex-col max-h-[92vh] shadow-2xl animate-in slide-in-from-bottom duration-300" onclick="event.stopPropagation()">
+        
+        <!-- Admin Header -->
+        <div class="flex items-center justify-between pb-3 border-b border-surface-high mb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-lg bg-brand-gold text-surface-lowest flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+            </span>
+            <div class="flex flex-col">
+              <h3 class="font-title font-bold text-base text-on-surface">Menu Admin Portal</h3>
+              <span class="text-[10px] text-brand-gold font-bold uppercase tracking-wider">PIN Verified &bull; Live Editor</span>
+            </div>
+          </div>
+          <button onclick="closeAdminPortal()" class="w-8 h-8 rounded-full bg-surface-high flex items-center justify-center text-on-muted hover:text-on-surface">
+            <span class="material-symbols-outlined text-[18px]">close</span>
+          </button>
+        </div>
+
+        <!-- Category Selector Dropdown & Actions -->
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-1.5 flex-1">
+            <span class="text-[11px] text-on-muted">Category:</span>
+            <select id="adminCategorySelect" onchange="renderAdminItemList()" class="bg-surface-low text-brand-gold font-bold text-xs py-1.5 px-2.5 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold flex-1">
+              <option value="burger">01. Burger</option>
+              <option value="sandwich">02. Sandwich</option>
+              <option value="wraps">03. Wraps</option>
+              <option value="marine">04. Marine</option>
+              <option value="pasta">05. Pasta</option>
+              <option value="chaap">06. Chaap</option>
+              <option value="chinese">07. Chinese</option>
+              <option value="salad">08. Salad</option>
+              <option value="fries">09. Fries</option>
+              <option value="pizza">10. Pizza</option>
+              <option value="shake">11. Shake</option>
+              <option value="mocktail">12. Mocktail</option>
+              <option value="slush">13. Slush</option>
+            </select>
+          </div>
+
+          <button onclick="toggleAddItemForm()" class="px-3 py-1.5 bg-brand-gold text-surface-lowest rounded-xl font-bold text-xs flex items-center gap-1 active:scale-95 transition-all shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">add_circle</span>
+            <span>Add Item</span>
+          </button>
+        </div>
+
+        <!-- Collapsible Add Item Form -->
+        <div id="addItemForm" class="hidden p-3 rounded-2xl bg-surface-low border border-brand-gold/30 mb-3 flex flex-col gap-2 animate-in fade-in duration-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-brand-gold">New Dish in <span id="addFormCatLabel">Burger</span></span>
+            <button onclick="toggleAddItemForm()" class="text-on-muted hover:text-on-surface text-xs font-bold">[✕ Close]</button>
+          </div>
+
+          <input type="text" id="newItemName" placeholder="Dish Name (e.g. Tandoori Special)" class="w-full bg-surface-card text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold">
+
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-on-muted">Portion:</span>
+            <select id="newItemType" onchange="updateNewItemPriceInputs()" class="bg-surface-card text-xs text-on-surface p-1.5 rounded-xl border border-surface-high focus:outline-none">
+              <option value="single">Single Price (₹)</option>
+              <option value="half_full">Half / Full</option>
+              <option value="s_m_l">S / M / L</option>
+              <option value="reg_large">Reg / Large</option>
+            </select>
+          </div>
+
+          <!-- Dynamic inputs for price based on type -->
+          <div id="newPriceInputsContainer" class="flex items-center gap-2">
+            <input type="number" id="newItemSinglePrice" placeholder="Price ₹" class="w-24 bg-surface-card text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none">
+          </div>
+
+          <button onclick="saveNewItem()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl uppercase tracking-wider active:scale-95 transition-all">
+            + Confirm &amp; Add to Menu
+          </button>
+        </div>
+
+        <!-- Scrollable List of Items in Selected Category -->
+        <div class="flex flex-col gap-2 overflow-y-auto flex-1 pr-1 py-1" id="adminItemList"></div>
+
+        <!-- Bottom Reset & Persistence Actions -->
+        <div class="pt-3 border-t border-surface-high flex items-center justify-between gap-2 mt-2">
+          <button onclick="resetMenuToDefaults()" class="text-[11px] text-red-400 hover:text-red-300 font-semibold flex items-center gap-1">
+            <span class="material-symbols-outlined text-[15px]">restore</span>
+            Reset to Original Menu
+          </button>
+
+          <button onclick="closeAdminPortal()" class="px-4 py-2 bg-brand-gold text-surface-lowest font-bold text-xs uppercase tracking-wider rounded-xl active:scale-95 transition-all">
+            Done &amp; Save
+          </button>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
   <!-- COMPLETE MENU DATA & JAVASCRIPT CONTROLLERS -->
   <script>
-    const MENU_DATA = {
+    // DEFAULT MENU DATABASE (100% Physical Menu Cards)
+    const DEFAULT_MENU_DATA = {
       burger: [
         { name: "Veg. Burger", price: 50 },
         { name: "Creamy Burger", price: 60 },
@@ -649,6 +787,27 @@
       ]
     };
 
+    // ACTIVE MENU DATA (Loads from localStorage if customized, else default)
+    let MENU_DATA = {};
+
+    function loadMenuData() {
+      try {
+        const stored = localStorage.getItem('grill_island_menu_data');
+        if (stored) {
+          MENU_DATA = JSON.parse(stored);
+        } else {
+          MENU_DATA = JSON.parse(JSON.stringify(DEFAULT_MENU_DATA));
+        }
+      } catch (e) {
+        MENU_DATA = JSON.parse(JSON.stringify(DEFAULT_MENU_DATA));
+      }
+    }
+
+    function saveMenuData() {
+      localStorage.setItem('grill_island_menu_data', JSON.stringify(MENU_DATA));
+      renderPhoneMenus();
+    }
+
     // CART STATE
     const cart = {};
 
@@ -657,11 +816,17 @@
         const grid = document.getElementById(`grid-${category}`);
         if (!grid) continue;
 
+        // Update item count badge
+        const badge = document.querySelector(`#sec-${category} .item-count-badge`);
+        if (badge) {
+          badge.textContent = `${items.length} items`;
+        }
+
         let html = '';
-        items.forEach(item => {
+        items.forEach((item, itemIdx) => {
           if (item.variants) {
             // Variant based (Half/Full, S/M/L, Reg/Large)
-            const chipsHtml = item.variants.map(v => {
+            const chipsHtml = item.variants.map((v, vIdx) => {
               const fullItemName = `${item.name} (${v.label})`;
               const currentQty = cart[fullItemName]?.qty || 0;
               return `
@@ -755,15 +920,12 @@
     function updateCartUI() {
       const keys = Object.keys(cart);
       let totalQty = 0;
-      let subtotal = 0;
+      let grandTotal = 0;
 
       keys.forEach(k => {
-        subtotal += cart[k].price * cart[k].qty;
+        grandTotal += cart[k].price * cart[k].qty;
         totalQty += cart[k].qty;
       });
-
-      // NO GST - TOTAL IS EXACT SUBTOTAL
-      const grandTotal = subtotal;
 
       // Header cart badge
       const headerBadge = document.getElementById('headerCartCount');
@@ -911,7 +1073,7 @@
       }, 1200);
     }
 
-    // WHATSAPP ORDER (NO GST)
+    // WHATSAPP ORDER (NO GST, DIRECT)
     function sendOrderWhatsApp() {
       const keys = Object.keys(cart);
       if (keys.length === 0) {
@@ -937,26 +1099,9 @@
       const url = `https://wa.me/919855381984?text=${encodeURIComponent(message)}`;
       window.open(url, '_blank');
       
-      // Also show gentle Instagram prompt after ordering!
       setTimeout(() => {
         openInstaPrompt();
       }, 1500);
-    }
-
-    function handleDirectKitchenOrder() {
-      const keys = Object.keys(cart);
-      if (keys.length === 0) {
-        alert('Please select dishes first!');
-        return;
-      }
-      const table = document.getElementById('tableInput').value.trim() || 'Table';
-      alert(`🛎️ Kitchen Bell Rang! Your order for ${table} has been queued at the live sigri hearth.`);
-      closeCartModal();
-      
-      // Also show gentle Instagram prompt after order bell
-      setTimeout(() => {
-        openInstaPrompt();
-      }, 1000);
     }
 
     // INSTAGRAM PROMPT CONTROLS (ALWAYS ASK: FOLLOW OR DISMISS)
@@ -975,11 +1120,265 @@
       dismissInstaPrompt();
     }
 
-    // Auto-prompt to follow Instagram on phone load
+    // ==========================================
+    // ADMIN SETTINGS & REPRICING SYSTEM (PIN: 0005)
+    // ==========================================
+    const ADMIN_PIN = "0005";
+
+    function openPinModal() {
+      const modal = document.getElementById('pinModal');
+      const input = document.getElementById('adminPinInput');
+      const error = document.getElementById('pinErrorMsg');
+      input.value = '';
+      error.classList.add('hidden');
+      modal.classList.remove('hidden');
+      setTimeout(() => input.focus(), 150);
+    }
+
+    function closePinModal() {
+      document.getElementById('pinModal').classList.add('hidden');
+    }
+
+    function verifyAdminPin() {
+      const input = document.getElementById('adminPinInput');
+      const error = document.getElementById('pinErrorMsg');
+      if (input.value.trim() === ADMIN_PIN) {
+        closePinModal();
+        openAdminPortal();
+      } else {
+        error.classList.remove('hidden');
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    function openAdminPortal() {
+      const portal = document.getElementById('adminPortalModal');
+      portal.classList.remove('hidden');
+      renderAdminItemList();
+    }
+
+    function closeAdminPortal() {
+      document.getElementById('adminPortalModal').classList.add('hidden');
+    }
+
+    function renderAdminItemList() {
+      const category = document.getElementById('adminCategorySelect').value;
+      const container = document.getElementById('adminItemList');
+      const items = MENU_DATA[category] || [];
+
+      document.getElementById('addFormCatLabel').textContent = category.toUpperCase();
+
+      if (items.length === 0) {
+        container.innerHTML = `<div class="text-xs text-on-muted py-6 text-center">No items in this category. Tap "+ Add Item" above!</div>`;
+        return;
+      }
+
+      let html = '';
+      items.forEach((item, idx) => {
+        if (item.variants) {
+          // Variant repricing row
+          const variantsInputs = item.variants.map((v, vIdx) => `
+            <div class="flex items-center gap-1">
+              <span class="text-[10px] text-on-muted font-bold">${v.label}:</span>
+              <div class="flex items-center bg-surface-card rounded-lg px-1.5 border border-surface-highest">
+                <span class="text-[10px] text-brand-gold">₹</span>
+                <input 
+                  type="number" 
+                  value="${v.price}" 
+                  onchange="updateVariantPrice('${category}', ${idx}, ${vIdx}, this.value)" 
+                  class="w-14 bg-transparent text-xs text-on-surface font-bold p-1 focus:outline-none"
+                >
+              </div>
+            </div>
+          `).join('');
+
+          html += `
+            <div class="p-2.5 rounded-2xl bg-surface-low border border-surface-high flex flex-col gap-2">
+              <div class="flex items-center justify-between">
+                <input 
+                  type="text" 
+                  value="${item.name}" 
+                  onchange="updateItemName('${category}', ${idx}, this.value)" 
+                  class="bg-transparent text-xs font-bold text-on-surface focus:ring-1 focus:ring-brand-gold rounded px-1 flex-1 mr-2"
+                >
+                <button onclick="deleteMenuItem('${category}', ${idx})" class="text-red-400 hover:text-red-300 p-1" title="Delete Dish">
+                  <span class="material-symbols-outlined text-[17px]">delete</span>
+                </button>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-surface-high/60">
+                ${variantsInputs}
+              </div>
+            </div>
+          `;
+        } else {
+          // Single price repricing row
+          html += `
+            <div class="p-2.5 rounded-2xl bg-surface-low border border-surface-high flex items-center justify-between gap-2">
+              <input 
+                type="text" 
+                value="${item.name}" 
+                onchange="updateItemName('${category}', ${idx}, this.value)" 
+                class="bg-transparent text-xs font-bold text-on-surface focus:ring-1 focus:ring-brand-gold rounded px-1 flex-1"
+              >
+              <div class="flex items-center gap-2 shrink-0">
+                <div class="flex items-center bg-surface-card rounded-lg px-2 border border-surface-highest">
+                  <span class="text-xs text-brand-gold font-bold">₹</span>
+                  <input 
+                    type="number" 
+                    value="${item.price}" 
+                    onchange="updateSinglePrice('${category}', ${idx}, this.value)" 
+                    class="w-14 bg-transparent text-xs text-on-surface font-bold p-1 focus:outline-none"
+                  >
+                </div>
+                <button onclick="deleteMenuItem('${category}', ${idx})" class="text-red-400 hover:text-red-300 p-1" title="Delete Dish">
+                  <span class="material-symbols-outlined text-[17px]">delete</span>
+                </button>
+              </div>
+            </div>
+          `;
+        }
+      });
+
+      container.innerHTML = html;
+    }
+
+    function updateSinglePrice(category, idx, newPrice) {
+      const priceNum = Number(newPrice);
+      if (!isNaN(priceNum) && priceNum >= 0) {
+        MENU_DATA[category][idx].price = priceNum;
+        saveMenuData();
+      }
+    }
+
+    function updateVariantPrice(category, idx, vIdx, newPrice) {
+      const priceNum = Number(newPrice);
+      if (!isNaN(priceNum) && priceNum >= 0) {
+        MENU_DATA[category][idx].variants[vIdx].price = priceNum;
+        saveMenuData();
+      }
+    }
+
+    function updateItemName(category, idx, newName) {
+      if (newName.trim()) {
+        MENU_DATA[category][idx].name = newName.trim();
+        saveMenuData();
+      }
+    }
+
+    function deleteMenuItem(category, idx) {
+      const item = MENU_DATA[category][idx];
+      if (confirm(`Are you sure you want to delete "${item.name}" from ${category.toUpperCase()}?`)) {
+        MENU_DATA[category].splice(idx, 1);
+        saveMenuData();
+        renderAdminItemList();
+      }
+    }
+
+    function toggleAddItemForm() {
+      const form = document.getElementById('addItemForm');
+      form.classList.toggle('hidden');
+      if (!form.classList.contains('hidden')) {
+        document.getElementById('newItemName').focus();
+      }
+    }
+
+    function updateNewItemPriceInputs() {
+      const type = document.getElementById('newItemType').value;
+      const container = document.getElementById('newPriceInputsContainer');
+
+      if (type === 'single') {
+        container.innerHTML = `<input type="number" id="newItemSinglePrice" placeholder="Price ₹" class="w-28 bg-surface-card text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none">`;
+      } else if (type === 'half_full') {
+        container.innerHTML = `
+          <input type="number" id="newHalfPrice" placeholder="Half ₹" class="w-24 bg-surface-card text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none">
+          <input type="number" id="newFullPrice" placeholder="Full ₹" class="w-24 bg-surface-card text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none">
+        `;
+      } else if (type === 's_m_l') {
+        container.innerHTML = `
+          <input type="number" id="newSPrice" placeholder="S ₹" class="w-20 bg-surface-card text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none">
+          <input type="number" id="newMPrice" placeholder="M ₹" class="w-20 bg-surface-card text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none">
+          <input type="number" id="newLPrice" placeholder="L ₹" class="w-20 bg-surface-card text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none">
+        `;
+      } else if (type === 'reg_large') {
+        container.innerHTML = `
+          <input type="number" id="newRegPrice" placeholder="Reg ₹" class="w-24 bg-surface-card text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none">
+          <input type="number" id="newLargePrice" placeholder="Large ₹" class="w-24 bg-surface-card text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none">
+        `;
+      }
+    }
+
+    function saveNewItem() {
+      const category = document.getElementById('adminCategorySelect').value;
+      const name = document.getElementById('newItemName').value.trim();
+      const type = document.getElementById('newItemType').value;
+
+      if (!name) {
+        alert('Please enter a dish name!');
+        return;
+      }
+
+      let newItem = null;
+      if (type === 'single') {
+        const price = Number(document.getElementById('newItemSinglePrice').value);
+        if (isNaN(price) || price < 0) {
+          alert('Please enter a valid price!');
+          return;
+        }
+        newItem = { name: name, price: price };
+      } else if (type === 'half_full') {
+        const half = Number(document.getElementById('newHalfPrice').value);
+        const full = Number(document.getElementById('newFullPrice').value);
+        if (isNaN(half) || isNaN(full)) {
+          alert('Please enter valid prices for Half and Full!');
+          return;
+        }
+        newItem = { name: name, variants: [{ label: "Half", price: half }, { label: "Full", price: full }] };
+      } else if (type === 's_m_l') {
+        const s = Number(document.getElementById('newSPrice').value);
+        const m = Number(document.getElementById('newMPrice').value);
+        const l = Number(document.getElementById('newLPrice').value);
+        if (isNaN(s) || isNaN(m) || isNaN(l)) {
+          alert('Please enter valid prices for S, M and L!');
+          return;
+        }
+        newItem = { name: name, variants: [{ label: "S", price: s }, { label: "M", price: m }, { label: "L", price: l }] };
+      } else if (type === 'reg_large') {
+        const reg = Number(document.getElementById('newRegPrice').value);
+        const large = Number(document.getElementById('newLargePrice').value);
+        if (isNaN(reg) || isNaN(large)) {
+          alert('Please enter valid prices for Regular and Large!');
+          return;
+        }
+        newItem = { name: name, variants: [{ label: "Reg", price: reg }, { label: "Large", price: large }] };
+      }
+
+      if (newItem) {
+        if (!MENU_DATA[category]) MENU_DATA[category] = [];
+        MENU_DATA[category].push(newItem);
+        saveMenuData();
+        renderAdminItemList();
+        toggleAddItemForm();
+        document.getElementById('newItemName').value = '';
+        alert(`✅ Added "${name}" to ${category.toUpperCase()}!`);
+      }
+    }
+
+    function resetMenuToDefaults() {
+      if (confirm('Are you sure you want to reset the entire menu back to the original physical cards? Any custom prices or items added will be replaced.')) {
+        MENU_DATA = JSON.parse(JSON.stringify(DEFAULT_MENU_DATA));
+        saveMenuData();
+        renderAdminItemList();
+        alert('Menu reset to defaults!');
+      }
+    }
+
+    // Initialize Menu & Features on DOM load
     window.addEventListener('DOMContentLoaded', () => {
+      loadMenuData();
       renderPhoneMenus();
 
-      // Show the Follow Instagram modal automatically after 1.8 seconds
+      // Show Instagram prompt after 1.8 seconds
       setTimeout(() => {
         openInstaPrompt();
       }, 1800);
