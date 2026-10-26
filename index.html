@@ -875,7 +875,7 @@
 
     async function fetchLatestCloudMenu() {
       // 1. Check optional Firebase URL
-      const fbUrl = localStorage.getItem('grill_island_firebase_url');
+      const fbUrl = typeof getFirebaseUrl === 'function' ? getFirebaseUrl() : (localStorage.getItem('grill_island_firebase_url') || DEFAULT_FIREBASE_URL);
       if (fbUrl) {
         try {
           const cleanUrl = fbUrl.replace(/\/+$/, '') + '/menu.json?t=' + Date.now();
@@ -1523,11 +1523,14 @@
       }
     }
 
+    // DEFAULT CLOUD FIREBASE URL (Embedded globally for all customer phones)
+    let DEFAULT_FIREBASE_URL = '';
     let activeFirebaseEventSource = null;
 
     function getFirebaseUrl() {
       const custom = localStorage.getItem('grill_island_firebase_url');
       if (custom && custom.trim()) return custom.trim().replace(/\/+$/, '');
+      if (DEFAULT_FIREBASE_URL && DEFAULT_FIREBASE_URL.trim()) return DEFAULT_FIREBASE_URL.trim().replace(/\/+$/, '');
       return '';
     }
 
@@ -1691,7 +1694,7 @@
 
     async function publishMenuGlobally() {
       const ghToken = localStorage.getItem('grill_island_gh_token');
-      const fbUrl = localStorage.getItem('grill_island_firebase_url');
+      const fbUrl = getFirebaseUrl();
 
       if (!ghToken && !fbUrl) {
         alert('👉 To publish changes directly to all customer phones, connect your free Firebase Realtime Database URL below (or enter a GitHub token).');
