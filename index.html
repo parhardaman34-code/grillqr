@@ -547,7 +547,7 @@
     <div id="adminPortalModal" class="fixed inset-0 z-50 modal-backdrop hidden flex flex-col justify-end sm:justify-center p-0 sm:p-4" onclick="closeAdminPortal(event)">
       <div class="w-full max-w-lg mx-auto bg-surface-card rounded-t-3xl sm:rounded-3xl border border-surface-high p-4 sm:p-5 flex flex-col max-h-[92vh] shadow-2xl animate-in slide-in-from-bottom duration-300" onclick="event.stopPropagation()">
         
-        <!-- Admin Header -->
+        <!-- Admin Header with Live Status Indicator -->
         <div class="flex items-center justify-between pb-3 border-b border-surface-high mb-3">
           <div class="flex items-center gap-2">
             <span class="w-8 h-8 rounded-lg bg-brand-gold text-surface-lowest flex items-center justify-center font-bold">
@@ -555,31 +555,14 @@
             </span>
             <div class="flex flex-col">
               <h3 class="font-title font-bold text-base text-on-surface">Menu Admin Portal</h3>
-              <span class="text-[10px] text-brand-gold font-bold uppercase tracking-wider">PIN Verified &bull; Live Editor</span>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]"></span>
+                <span id="syncStatusBadge" class="text-[10px] text-emerald-400 font-semibold">Live Network &bull; All Phones In Sync</span>
+              </div>
             </div>
           </div>
-          <button onclick="closeAdminPortal()" class="w-8 h-8 rounded-full bg-surface-high flex items-center justify-center text-on-muted hover:text-on-surface">
+          <button onclick="closeAdminPortal()" class="w-8 h-8 rounded-full bg-surface-high flex items-center justify-center text-on-muted hover:text-on-surface" title="Close without publishing">
             <span class="material-symbols-outlined text-[18px]">close</span>
-          </button>
-        </div>
-
-        <!-- Live Menu Network Sync Card -->
-        <div class="bg-surface-low border border-surface-high rounded-2xl p-3 mb-3 flex flex-col gap-2">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
-              <span class="text-xs font-bold text-on-surface">Live Dining Network</span>
-            </div>
-            <span id="syncStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-semibold">● In Sync</span>
-          </div>
-
-          <p class="text-[11px] text-on-muted leading-tight">
-            Any changes you make below are updated live. Tap <strong>Publish Changes</strong> to sync all dining tables.
-          </p>
-
-          <button id="publishCloudBtn" onclick="publishMenuGlobally()" class="w-full py-2.5 bg-brand-gold hover:bg-brand-gold-light text-surface-lowest font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all">
-            <span class="material-symbols-outlined text-[17px]">cloud_done</span>
-            <span id="publishBtnText">Publish Changes to All Customer Phones</span>
           </button>
         </div>
 
@@ -642,15 +625,16 @@
         <!-- Scrollable List of Items in Selected Category -->
         <div class="flex flex-col gap-2 overflow-y-auto flex-1 pr-1 py-1" id="adminItemList"></div>
 
-        <!-- Bottom Reset & Persistence Actions -->
+        <!-- Bottom Single Joined Save & Update Action -->
         <div class="pt-3 border-t border-surface-high flex items-center justify-between gap-2 mt-2">
           <button onclick="resetMenuToDefaults()" class="text-[11px] text-red-400 hover:text-red-300 font-semibold flex items-center gap-1">
             <span class="material-symbols-outlined text-[15px]">restore</span>
-            Reset to Original Menu
+            Reset Menu
           </button>
 
-          <button onclick="closeAdminPortal()" class="px-4 py-2 bg-brand-gold text-surface-lowest font-bold text-xs uppercase tracking-wider rounded-xl active:scale-95 transition-all">
-            Done &amp; Save
+          <button id="saveAndPublishBtn" onclick="saveAndPublishAndClose()" class="px-5 py-2.5 bg-brand-gold hover:bg-brand-gold-light text-surface-lowest font-bold text-xs uppercase tracking-wider rounded-xl flex items-center gap-1.5 shadow-md active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-[17px]">cloud_done</span>
+            <span id="savePublishBtnText">Save &amp; Update All Phones</span>
           </button>
         </div>
 
@@ -888,14 +872,14 @@
       const badge = document.getElementById('syncStatusBadge');
       if (!badge) return;
       if (status === 'unsynced') {
-        badge.className = 'text-[10px] px-2 py-0.5 rounded-full bg-amber-950/80 text-amber-400 border border-amber-500/30 font-semibold';
-        badge.innerHTML = '⚠️ Unsynced Changes';
+        badge.className = 'text-[10px] text-amber-400 font-semibold';
+        badge.innerHTML = '⚠️ Unsaved Changes';
       } else if (status === 'syncing') {
-        badge.className = 'text-[10px] px-2 py-0.5 rounded-full bg-blue-950/80 text-blue-400 border border-blue-500/30 font-semibold animate-pulse';
-        badge.innerHTML = '⏳ Publishing...';
+        badge.className = 'text-[10px] text-blue-400 font-semibold animate-pulse';
+        badge.innerHTML = '⏳ Updating Customer Phones...';
       } else if (status === 'synced') {
-        badge.className = 'text-[10px] px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-semibold';
-        badge.innerHTML = '● Live Synced';
+        badge.className = 'text-[10px] text-emerald-400 font-semibold';
+        badge.innerHTML = 'Live Network &bull; In Sync';
       }
     }
 
@@ -1251,11 +1235,26 @@
       updateSyncStatusBadge(hasUnsyncedChanges ? 'unsynced' : 'synced');
     }
 
-    async function closeAdminPortal() {
-      if (hasUnsyncedChanges) {
-        publishMenuGlobally(true);
-      }
+    function closeAdminPortal() {
       document.getElementById('adminPortalModal').classList.add('hidden');
+    }
+
+    async function saveAndPublishAndClose() {
+      const btn = document.getElementById('saveAndPublishBtn');
+      const text = document.getElementById('savePublishBtnText');
+      const origText = text ? text.innerHTML : 'Save &amp; Update All Phones';
+
+      if (btn) btn.disabled = true;
+      if (text) text.textContent = 'Updating Customer Phones...';
+
+      const ok = await publishMenuGlobally(false);
+
+      if (btn) btn.disabled = false;
+      if (text) text.innerHTML = origText;
+
+      if (ok !== false) {
+        document.getElementById('adminPortalModal').classList.add('hidden');
+      }
     }
 
     function renderAdminItemList() {
@@ -1533,9 +1532,9 @@
 
     async function publishMenuGlobally(silent = false) {
       const endpoint = getSyncEndpoint();
-      const btn = document.getElementById('publishCloudBtn');
-      const btnText = document.getElementById('publishBtnText');
-      const originalText = btnText ? btnText.textContent : 'Publish Changes to All Customer Phones';
+      const btn = document.getElementById('saveAndPublishBtn') || document.getElementById('publishCloudBtn');
+      const btnText = document.getElementById('savePublishBtnText') || document.getElementById('publishBtnText');
+      const originalText = btnText ? btnText.textContent : 'Save & Update All Phones';
 
       if (btn) btn.disabled = true;
       if (btnText) btnText.textContent = 'Updating Customer Phones...';
@@ -1605,6 +1604,7 @@
           alert('⚠️ Network notice: Changes are saved on your phone. Please ensure your internet connection is active to update all customer phones.');
         }
       }
+      return success;
     }
 
     // Initialize Menu & Features on DOM load
