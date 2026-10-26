@@ -563,73 +563,24 @@
           </button>
         </div>
 
-        <!-- Global Cloud Sync Control Card -->
+        <!-- Live Menu Network Sync Card -->
         <div class="bg-surface-low border border-surface-high rounded-2xl p-3 mb-3 flex flex-col gap-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-amber-400 text-[18px]">local_fire_department</span>
-              <span class="text-xs font-bold text-on-surface">Live Cloud Sync</span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+              <span class="text-xs font-bold text-on-surface">Live Dining Network</span>
             </div>
-            <span id="syncStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-semibold">● Menu Ready</span>
+            <span id="syncStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-semibold">● In Sync</span>
           </div>
 
-          <!-- Firebase Live Status Pill -->
-          <div id="firebaseStatusBanner" class="p-2 rounded-xl bg-surface-card border border-surface-high flex items-center justify-between">
-            <div class="flex items-center gap-1.5 overflow-hidden">
-              <span id="fbDot" class="w-2 h-2 rounded-full bg-surface-highest shrink-0"></span>
-              <span id="fbStatusText" class="text-[11px] text-on-muted truncate font-medium">Firebase: Not Connected</span>
-            </div>
-            <button onclick="toggleCloudSettings()" class="text-[10px] text-brand-gold font-bold uppercase tracking-wider shrink-0 ml-2 hover:underline">
-              [Setup / URL]
-            </button>
-          </div>
+          <p class="text-[11px] text-on-muted leading-tight">
+            Any changes you make below are updated live. Tap <strong>Publish Changes</strong> to sync all dining tables.
+          </p>
 
-          <div class="flex items-center gap-2 pt-0.5">
-            <button id="publishCloudBtn" onclick="publishMenuGlobally()" class="flex-1 py-2 bg-brand-gold hover:bg-brand-gold-light text-surface-lowest font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all">
-              <span class="material-symbols-outlined text-[16px]">cloud_upload</span>
-              <span id="publishBtnText">Publish to All Phones</span>
-            </button>
-            <button onclick="downloadMenuJson()" class="px-2.5 py-2 bg-surface-card hover:bg-surface-high text-on-surface font-semibold text-xs rounded-xl border border-surface-high flex items-center gap-1 active:scale-95 transition-all" title="Download menu.json">
-              <span class="material-symbols-outlined text-[15px]">download</span>
-              <span>JSON</span>
-            </button>
-            <button onclick="toggleCloudSettings()" class="p-2 bg-surface-card hover:bg-surface-high text-on-muted hover:text-on-surface rounded-xl border border-surface-high active:scale-95 transition-all" title="Cloud Sync Settings">
-              <span class="material-symbols-outlined text-[16px]">settings</span>
-            </button>
-          </div>
-
-          <!-- Collapsible Cloud Sync Settings Drawer -->
-          <div id="cloudSettingsDrawer" class="hidden pt-2 border-t border-surface-high flex flex-col gap-2.5 text-left animate-in fade-in duration-200">
-            <!-- Firebase (Recommended 100% Free Database) -->
-            <div class="p-2.5 rounded-xl bg-surface-card/60 border border-amber-500/30 flex flex-col gap-1.5">
-              <div class="flex items-center justify-between">
-                <span class="text-[11px] font-bold text-amber-400 flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[14px]">local_fire_department</span>
-                  Firebase Realtime Database (100% Free Forever)
-                </span>
-                <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 font-bold uppercase">Instant Live Sync</span>
-              </div>
-              <p class="text-[10px] text-on-muted leading-tight">
-                Create free at <strong>console.firebase.google.com</strong> &rarr; Realtime Database &rarr; Test Mode. Paste your URL below:
-              </p>
-              <div class="flex items-center gap-1.5">
-                <input type="text" id="firebaseUrlInput" value="https://grill-baf95-default-rtdb.firebaseio.com" placeholder="https://<project>-default-rtdb.firebaseio.com" class="flex-1 bg-surface-low text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold font-mono text-[11px]">
-                <button onclick="saveAndTestFirebase()" class="px-3 py-2 bg-amber-500 hover:bg-amber-400 text-surface-lowest font-bold text-xs rounded-xl active:scale-95">Save &amp; Sync</button>
-              </div>
-            </div>
-
-            <!-- GitHub Token (Alternative Backup) -->
-            <div class="p-2.5 rounded-xl bg-surface-card/40 border border-surface-high flex flex-col gap-1.5">
-              <span class="text-[11px] font-bold text-on-surface flex items-center gap-1">
-                <span class="material-symbols-outlined text-[14px]">terminal</span>
-                GitHub Token (Alternative Backup)
-              </span>
-              <div class="flex items-center gap-1.5">
-                <input type="password" id="ghTokenInput" placeholder="ghp_... or github_pat_..." class="flex-1 bg-surface-low text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold font-mono">
-                <button onclick="saveGhToken()" class="px-3 py-2 bg-brand-gold text-surface-lowest font-bold text-xs rounded-xl active:scale-95">Save</button>
-              </div>
-            </div>
-          </div>
+          <button id="publishCloudBtn" onclick="publishMenuGlobally()" class="w-full py-2.5 bg-brand-gold hover:bg-brand-gold-light text-surface-lowest font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-[17px]">cloud_done</span>
+            <span id="publishBtnText">Publish Changes to All Customer Phones</span>
+          </button>
         </div>
 
         <!-- Category Selector Dropdown & Actions -->
@@ -874,11 +825,11 @@
     }
 
     async function fetchLatestCloudMenu() {
-      // 1. Check optional Firebase URL
-      const fbUrl = typeof getFirebaseUrl === 'function' ? getFirebaseUrl() : (localStorage.getItem('grill_island_firebase_url') || DEFAULT_FIREBASE_URL);
-      if (fbUrl) {
+      // 1. Fetch from live cloud dining network
+      const endpoint = typeof getSyncEndpoint === 'function' ? getSyncEndpoint() : 'https://grill-baf95-default-rtdb.firebaseio.com';
+      if (endpoint) {
         try {
-          const cleanUrl = fbUrl.replace(/\/+$/, '') + '/menu.json?t=' + Date.now();
+          const cleanUrl = endpoint.replace(/\/+$/, '') + '/menu.json?t=' + Date.now();
           const res = await fetch(cleanUrl, { cache: 'no-store' });
           if (res.ok) {
             const data = await res.json();
@@ -898,7 +849,7 @@
             }
           }
         } catch (e) {
-          console.warn('Firebase fetch notice:', e);
+          console.warn('Network sync notice:', e);
         }
       }
 
@@ -1297,18 +1248,13 @@
       const portal = document.getElementById('adminPortalModal');
       portal.classList.remove('hidden');
       renderAdminItemList();
-
-      const ghToken = localStorage.getItem('grill_island_gh_token') || '';
-      const fbUrl = localStorage.getItem('grill_island_firebase_url') || DEFAULT_FIREBASE_URL;
-      const ghInput = document.getElementById('ghTokenInput');
-      const fbInput = document.getElementById('firebaseUrlInput');
-      if (ghInput) ghInput.value = ghToken;
-      if (fbInput) fbInput.value = fbUrl;
       updateSyncStatusBadge(hasUnsyncedChanges ? 'unsynced' : 'synced');
-      updateFirebaseStatusUI(!!getFirebaseUrl());
     }
 
-    function closeAdminPortal() {
+    async function closeAdminPortal() {
+      if (hasUnsyncedChanges) {
+        publishMenuGlobally(true);
+      }
       document.getElementById('adminPortalModal').classList.add('hidden');
     }
 
@@ -1523,55 +1469,36 @@
       }
     }
 
-    // DEFAULT CLOUD FIREBASE URL (Embedded globally for all customer phones)
-    let DEFAULT_FIREBASE_URL = 'https://grill-baf95-default-rtdb.firebaseio.com';
-    let activeFirebaseEventSource = null;
+    // EMBEDDED DINING CLOUD SYNC (Runs silently in background for all phones)
+    const EMBEDDED_SYNC_ENDPOINT = 'https://grill-baf95-default-rtdb.firebaseio.com';
+    let activeRealtimeStream = null;
 
-    function getFirebaseUrl() {
-      const custom = localStorage.getItem('grill_island_firebase_url');
+    function getSyncEndpoint() {
+      const custom = localStorage.getItem('grill_island_sync_endpoint');
       if (custom && custom.trim()) return custom.trim().replace(/\/+$/, '');
-      if (DEFAULT_FIREBASE_URL && DEFAULT_FIREBASE_URL.trim()) return DEFAULT_FIREBASE_URL.trim().replace(/\/+$/, '');
-      return '';
+      return EMBEDDED_SYNC_ENDPOINT;
     }
 
-    function updateFirebaseStatusUI(isConnected, customText) {
-      const dot = document.getElementById('fbDot');
-      const text = document.getElementById('fbStatusText');
-      if (!dot || !text) return;
-      if (isConnected) {
-        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_8px_rgba(52,211,153,0.8)]';
-        text.className = 'text-[11px] text-emerald-400 truncate font-semibold';
-        text.textContent = customText || 'Firebase: Connected (Live Realtime)';
-      } else {
-        dot.className = 'w-2 h-2 rounded-full bg-surface-highest shrink-0';
-        text.className = 'text-[11px] text-on-muted truncate font-medium';
-        text.textContent = customText || 'Firebase: Not Connected';
-      }
-    }
+    function initRealtimeSync() {
+      const endpoint = getSyncEndpoint();
+      if (!endpoint) return;
 
-    function initFirebaseRealtimeSync() {
-      const fbUrl = getFirebaseUrl();
-      if (!fbUrl) {
-        updateFirebaseStatusUI(false);
-        return;
-      }
-
-      if (activeFirebaseEventSource) {
-        activeFirebaseEventSource.close();
-        activeFirebaseEventSource = null;
+      if (activeRealtimeStream) {
+        activeRealtimeStream.close();
+        activeRealtimeStream = null;
       }
 
       try {
-        const streamUrl = fbUrl + '/menu.json';
-        activeFirebaseEventSource = new EventSource(streamUrl);
+        const streamUrl = endpoint + '/menu.json';
+        activeRealtimeStream = new EventSource(streamUrl);
 
-        activeFirebaseEventSource.addEventListener('put', (event) => {
+        activeRealtimeStream.addEventListener('put', (event) => {
           try {
             const res = JSON.parse(event.data);
             if (res && res.path === '/' && res.data && typeof res.data === 'object' && Object.keys(res.data).length > 0) {
               const isAdmin = localStorage.getItem('grill_island_is_admin');
               if (isAdmin && hasUnsyncedChanges) {
-                // Admin is editing local draft
+                // Admin is editing local draft, keep it
               } else {
                 MENU_DATA = res.data;
                 localStorage.setItem('grill_island_menu_data', JSON.stringify(res.data));
@@ -1580,107 +1507,19 @@
                   renderAdminItemList();
                 }
               }
-              updateFirebaseStatusUI(true);
+              updateSyncStatusBadge('synced');
             }
-          } catch (e) {
-            console.warn('Firebase realtime stream parse error:', e);
-          }
+          } catch (e) {}
         });
 
-        activeFirebaseEventSource.onopen = () => {
-          updateFirebaseStatusUI(true);
+        activeRealtimeStream.onopen = () => {
+          updateSyncStatusBadge('synced');
         };
 
-        activeFirebaseEventSource.onerror = () => {
+        activeRealtimeStream.onerror = () => {
           // Reconnects automatically
         };
-      } catch (e) {
-        console.warn('EventSource initialization error:', e);
-        updateFirebaseStatusUI(false);
-      }
-    }
-
-    async function saveAndTestFirebase() {
-      const input = document.getElementById('firebaseUrlInput');
-      let url = input.value.trim().replace(/\/+$/, '');
-      if (!url) {
-        localStorage.removeItem('grill_island_firebase_url');
-        if (activeFirebaseEventSource) {
-          activeFirebaseEventSource.close();
-          activeFirebaseEventSource = null;
-        }
-        updateFirebaseStatusUI(false);
-        alert('Firebase URL cleared.');
-        return;
-      }
-
-      if (!url.startsWith('https://')) {
-        alert('Please enter a valid Firebase URL starting with https://\nExample: https://your-project-default-rtdb.firebaseio.com');
-        return;
-      }
-
-      updateFirebaseStatusUI(false, 'Connecting & Testing...');
-
-      try {
-        // Upload current MENU_DATA to Firebase
-        const res = await fetch(url + '/menu.json', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(MENU_DATA)
-        });
-
-        if (res.ok) {
-          localStorage.setItem('grill_island_firebase_url', url);
-          initFirebaseRealtimeSync();
-          updateFirebaseStatusUI(true);
-          updateSyncStatusBadge('synced');
-          hasUnsyncedChanges = false;
-          alert('🔥 SUCCESS! Connected to Firebase!\n\nCurrent menu uploaded. All customer phones scanning your QR code now update in REAL TIME (< 0.3s) whenever you change a price!');
-        } else {
-          throw new Error('Firebase responded with status: ' + res.status);
-        }
-      } catch (err) {
-        updateFirebaseStatusUI(false, 'Connection Failed');
-        alert('❌ Could not connect to Firebase:\n' + err.message + '\n\nMake sure your Firebase Realtime Database rules are set to Test Mode (.read: true, .write: true).');
-      }
-    }
-
-    function toggleCloudSettings() {
-      const drawer = document.getElementById('cloudSettingsDrawer');
-      drawer.classList.toggle('hidden');
-      if (!drawer.classList.contains('hidden')) {
-        const ghToken = localStorage.getItem('grill_island_gh_token') || '';
-        const fbUrl = localStorage.getItem('grill_island_firebase_url') || DEFAULT_FIREBASE_URL;
-        const ghInput = document.getElementById('ghTokenInput');
-        const fbInput = document.getElementById('firebaseUrlInput');
-        if (ghInput) ghInput.value = ghToken;
-        if (fbInput) fbInput.value = fbUrl;
-      }
-    }
-
-    function saveGhToken() {
-      const token = document.getElementById('ghTokenInput').value.trim();
-      if (!token) {
-        localStorage.removeItem('grill_island_gh_token');
-        alert('GitHub Token cleared.');
-      } else {
-        localStorage.setItem('grill_island_gh_token', token);
-        alert('✅ GitHub Token saved securely on this phone!');
-      }
-    }
-
-    function downloadMenuJson() {
-      const jsonStr = JSON.stringify(MENU_DATA, null, 2);
-      const blob = new Blob([jsonStr], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'menu.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      alert('📥 "menu.json" downloaded! You can upload it to github.com/parhardaman34-code/grillqr to update all customer phones.');
+      } catch (e) {}
     }
 
     function utf8ToBase64(str) {
@@ -1692,65 +1531,48 @@
       return btoa(binary);
     }
 
-    async function publishMenuGlobally() {
-      const ghToken = localStorage.getItem('grill_island_gh_token');
-      const fbUrl = getFirebaseUrl();
-
-      if (!ghToken && !fbUrl) {
-        alert('👉 To publish changes directly to all customer phones, connect your free Firebase Realtime Database URL below (or enter a GitHub token).');
-        document.getElementById('cloudSettingsDrawer').classList.remove('hidden');
-        document.getElementById('firebaseUrlInput').focus();
-        return;
-      }
-
+    async function publishMenuGlobally(silent = false) {
+      const endpoint = getSyncEndpoint();
       const btn = document.getElementById('publishCloudBtn');
       const btnText = document.getElementById('publishBtnText');
-      const originalText = btnText ? btnText.textContent : 'Publish to All Phones';
+      const originalText = btnText ? btnText.textContent : 'Publish Changes to All Customer Phones';
 
       if (btn) btn.disabled = true;
-      if (btnText) btnText.textContent = 'Publishing...';
+      if (btnText) btnText.textContent = 'Updating Customer Phones...';
       updateSyncStatusBadge('syncing');
 
-      let publishedTo = [];
+      let success = false;
 
-      // 1. Sync to Firebase if configured
-      if (fbUrl) {
+      // 1. Instant push to live cloud endpoint
+      if (endpoint) {
         try {
-          const cleanUrl = fbUrl.replace(/\/+$/, '') + '/menu.json';
-          const fbRes = await fetch(cleanUrl, {
+          const res = await fetch(endpoint + '/menu.json', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(MENU_DATA)
           });
-          if (fbRes.ok) {
-            publishedTo.push('Firebase (Instant < 0.3s)');
+          if (res.ok) {
+            success = true;
           }
         } catch (e) {
-          console.error('Firebase publish error:', e);
+          console.warn('Sync notice:', e);
         }
       }
 
-      // 2. Sync to GitHub repository
+      // 2. Also sync to GitHub backup if token exists
+      const ghToken = localStorage.getItem('grill_island_gh_token');
       if (ghToken) {
         try {
           const repo = 'parhardaman34-code/grillqr';
           const filePath = 'menu.json';
-
-          // Get latest SHA of menu.json
           let sha = null;
           const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}`, {
-            headers: {
-              'Authorization': `Bearer ${ghToken}`,
-              'Accept': 'application/vnd.github+json'
-            }
+            headers: { 'Authorization': `Bearer ${ghToken}`, 'Accept': 'application/vnd.github+json' }
           });
-
           if (getRes.ok) {
             const fileInfo = await getRes.json();
             sha = fileInfo.sha;
           }
-
-          // Commit updated menu.json
           const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}`, {
             method: 'PUT',
             headers: {
@@ -1759,33 +1581,30 @@
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              message: 'Admin updated menu via Phone Portal',
+              message: 'Update menu',
               content: utf8ToBase64(JSON.stringify(MENU_DATA, null, 2)),
               ...(sha ? { sha } : {})
             })
           });
-
-          if (putRes.ok) {
-            publishedTo.push('GitHub & Vercel (~15s deployment)');
-          } else {
-            const errData = await putRes.json();
-            throw new Error(errData.message || 'GitHub API error ' + putRes.status);
-          }
-        } catch (err) {
-          alert('❌ GitHub Sync Error: ' + err.message + '\n\nPlease verify your GitHub token has "repo" permissions.');
-          if (btn) btn.disabled = false;
-          if (btnText) btnText.textContent = originalText;
-          updateSyncStatusBadge('unsynced');
-          return;
-        }
+          if (putRes.ok) success = true;
+        } catch (e) {}
       }
 
       if (btn) btn.disabled = false;
       if (btnText) btnText.textContent = originalText;
-      hasUnsyncedChanges = false;
-      updateSyncStatusBadge('synced');
 
-      alert(`✅ Success! Menu published live to: ${publishedTo.join(' & ')}!\n\nAll customer phones scanning the QR code will now see your updated dishes and prices.`);
+      if (success) {
+        hasUnsyncedChanges = false;
+        updateSyncStatusBadge('synced');
+        if (!silent) {
+          alert('✅ Menu updated successfully! All customer phones scanning the QR code now show the updated prices.');
+        }
+      } else {
+        updateSyncStatusBadge('unsynced');
+        if (!silent) {
+          alert('⚠️ Network notice: Changes are saved on your phone. Please ensure your internet connection is active to update all customer phones.');
+        }
+      }
     }
 
     // Initialize Menu & Features on DOM load
@@ -1793,7 +1612,7 @@
       initLocalMenuData();
       renderPhoneMenus();
       fetchLatestCloudMenu();
-      initFirebaseRealtimeSync();
+      initRealtimeSync();
 
       // Show Instagram prompt after 1.8 seconds
       setTimeout(() => {
