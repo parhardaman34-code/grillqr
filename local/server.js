@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
-const PUBLIC_DIR = __dirname;
+const PUBLIC_DIR = path.join(__dirname, '..');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -16,15 +16,10 @@ const MIME_TYPES = {
   '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon',
-  '.webp': 'image/webp',
-  '.woff': 'font/woff',
-  '.woff2': 'font/woff2',
-  '.ttf': 'font/ttf',
-  '.otf': 'font/otf'
+  '.webp': 'image/webp'
 };
 
 const server = http.createServer((req, res) => {
-  // CORS & Security headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
 
@@ -34,7 +29,6 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Sanitize and resolve file path
   let safePath = decodeURI(req.url.split('?')[0]);
   if (safePath === '/' || safePath === '') {
     safePath = '/index.html';
@@ -42,7 +36,6 @@ const server = http.createServer((req, res) => {
 
   const filePath = path.normalize(path.join(PUBLIC_DIR, safePath));
 
-  // Guard against path traversal outside PUBLIC_DIR
   if (!filePath.startsWith(PUBLIC_DIR)) {
     res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('403 Forbidden');
@@ -51,7 +44,6 @@ const server = http.createServer((req, res) => {
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
-      // Fallback to index.html if file not found
       const indexPath = path.join(PUBLIC_DIR, 'index.html');
       fs.readFile(indexPath, (readErr, content) => {
         if (readErr) {
@@ -84,6 +76,5 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`\n========================================`);
   console.log(`  Grill Island Local Server is Running!`);
   console.log(`  Local URL:    http://localhost:${PORT}`);
-  console.log(`  Network URL:  http://127.0.0.1:${PORT}`);
   console.log(`========================================\n`);
 });
