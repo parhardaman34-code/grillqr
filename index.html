@@ -567,15 +567,22 @@
         <div class="bg-surface-low border border-surface-high rounded-2xl p-3 mb-3 flex flex-col gap-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-brand-gold text-[18px]">cloud_sync</span>
-              <span class="text-xs font-bold text-on-surface">Publish Changes to All Phones</span>
+              <span class="material-symbols-outlined text-amber-400 text-[18px]">local_fire_department</span>
+              <span class="text-xs font-bold text-on-surface">Live Cloud Sync</span>
             </div>
-            <span id="syncStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-semibold">● Live Menu Active</span>
+            <span id="syncStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-semibold">● Menu Ready</span>
           </div>
-          
-          <p class="text-[10.5px] text-on-muted leading-tight">
-            Edits made here update your phone. Tap <strong>Publish Live</strong> to update all customer phones scanning the QR code.
-          </p>
+
+          <!-- Firebase Live Status Pill -->
+          <div id="firebaseStatusBanner" class="p-2 rounded-xl bg-surface-card border border-surface-high flex items-center justify-between">
+            <div class="flex items-center gap-1.5 overflow-hidden">
+              <span id="fbDot" class="w-2 h-2 rounded-full bg-surface-highest shrink-0"></span>
+              <span id="fbStatusText" class="text-[11px] text-on-muted truncate font-medium">Firebase: Not Connected</span>
+            </div>
+            <button onclick="toggleCloudSettings()" class="text-[10px] text-brand-gold font-bold uppercase tracking-wider shrink-0 ml-2 hover:underline">
+              [Setup / URL]
+            </button>
+          </div>
 
           <div class="flex items-center gap-2 pt-0.5">
             <button id="publishCloudBtn" onclick="publishMenuGlobally()" class="flex-1 py-2 bg-brand-gold hover:bg-brand-gold-light text-surface-lowest font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all">
@@ -592,23 +599,34 @@
           </div>
 
           <!-- Collapsible Cloud Sync Settings Drawer -->
-          <div id="cloudSettingsDrawer" class="hidden pt-2 border-t border-surface-high flex flex-col gap-2 text-left animate-in fade-in duration-200">
-            <div>
-              <label class="text-[10px] text-on-muted uppercase font-bold tracking-wider block mb-1">GitHub Personal Access Token (for 1-click auto-sync):</label>
-              <div class="flex items-center gap-1.5">
-                <input type="password" id="ghTokenInput" placeholder="github_pat_... or ghp_..." class="flex-1 bg-surface-card text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold font-mono">
-                <button onclick="saveGhToken()" class="px-3 py-2 bg-brand-gold text-surface-lowest font-bold text-xs rounded-xl active:scale-95">Save</button>
+          <div id="cloudSettingsDrawer" class="hidden pt-2 border-t border-surface-high flex flex-col gap-2.5 text-left animate-in fade-in duration-200">
+            <!-- Firebase (Recommended 100% Free Database) -->
+            <div class="p-2.5 rounded-xl bg-surface-card/60 border border-amber-500/30 flex flex-col gap-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-amber-400 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">local_fire_department</span>
+                  Firebase Realtime Database (100% Free Forever)
+                </span>
+                <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 font-bold uppercase">Instant Live Sync</span>
               </div>
-              <p class="text-[9.5px] text-on-muted mt-1 leading-snug">
-                Stored privately on this device. Create at <a href="https://github.com/settings/tokens" target="_blank" class="text-brand-gold underline font-semibold">github.com/settings/tokens</a> with <code>repo</code> permissions.
+              <p class="text-[10px] text-on-muted leading-tight">
+                Create free at <strong>console.firebase.google.com</strong> &rarr; Realtime Database &rarr; Test Mode. Paste your URL below:
               </p>
+              <div class="flex items-center gap-1.5">
+                <input type="text" id="firebaseUrlInput" placeholder="https://<project>-default-rtdb.firebaseio.com" class="flex-1 bg-surface-low text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold font-mono text-[11px]">
+                <button onclick="saveAndTestFirebase()" class="px-3 py-2 bg-amber-500 hover:bg-amber-400 text-surface-lowest font-bold text-xs rounded-xl active:scale-95">Save &amp; Sync</button>
+              </div>
             </div>
 
-            <div class="pt-1">
-              <label class="text-[10px] text-on-muted uppercase font-bold tracking-wider block mb-1">Optional: Firebase Realtime URL (0-sec instant sync):</label>
+            <!-- GitHub Token (Alternative Backup) -->
+            <div class="p-2.5 rounded-xl bg-surface-card/40 border border-surface-high flex flex-col gap-1.5">
+              <span class="text-[11px] font-bold text-on-surface flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">terminal</span>
+                GitHub Token (Alternative Backup)
+              </span>
               <div class="flex items-center gap-1.5">
-                <input type="text" id="firebaseUrlInput" placeholder="https://your-app-default-rtdb.firebaseio.com" class="flex-1 bg-surface-card text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold font-mono text-[11px]">
-                <button onclick="saveFirebaseUrl()" class="px-3 py-2 bg-brand-gold text-surface-lowest font-bold text-xs rounded-xl active:scale-95">Save</button>
+                <input type="password" id="ghTokenInput" placeholder="ghp_... or github_pat_..." class="flex-1 bg-surface-low text-xs text-on-surface p-2 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold font-mono">
+                <button onclick="saveGhToken()" class="px-3 py-2 bg-brand-gold text-surface-lowest font-bold text-xs rounded-xl active:scale-95">Save</button>
               </div>
             </div>
           </div>
@@ -1287,6 +1305,7 @@
       if (ghInput) ghInput.value = ghToken;
       if (fbInput) fbInput.value = fbUrl;
       updateSyncStatusBadge(hasUnsyncedChanges ? 'unsynced' : 'synced');
+      updateFirebaseStatusUI(!!getFirebaseUrl());
     }
 
     function closeAdminPortal() {
@@ -1504,6 +1523,125 @@
       }
     }
 
+    let activeFirebaseEventSource = null;
+
+    function getFirebaseUrl() {
+      const custom = localStorage.getItem('grill_island_firebase_url');
+      if (custom && custom.trim()) return custom.trim().replace(/\/+$/, '');
+      return '';
+    }
+
+    function updateFirebaseStatusUI(isConnected, customText) {
+      const dot = document.getElementById('fbDot');
+      const text = document.getElementById('fbStatusText');
+      if (!dot || !text) return;
+      if (isConnected) {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_8px_rgba(52,211,153,0.8)]';
+        text.className = 'text-[11px] text-emerald-400 truncate font-semibold';
+        text.textContent = customText || 'Firebase: Connected (Live Realtime)';
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-surface-highest shrink-0';
+        text.className = 'text-[11px] text-on-muted truncate font-medium';
+        text.textContent = customText || 'Firebase: Not Connected';
+      }
+    }
+
+    function initFirebaseRealtimeSync() {
+      const fbUrl = getFirebaseUrl();
+      if (!fbUrl) {
+        updateFirebaseStatusUI(false);
+        return;
+      }
+
+      if (activeFirebaseEventSource) {
+        activeFirebaseEventSource.close();
+        activeFirebaseEventSource = null;
+      }
+
+      try {
+        const streamUrl = fbUrl + '/menu.json';
+        activeFirebaseEventSource = new EventSource(streamUrl);
+
+        activeFirebaseEventSource.addEventListener('put', (event) => {
+          try {
+            const res = JSON.parse(event.data);
+            if (res && res.path === '/' && res.data && typeof res.data === 'object' && Object.keys(res.data).length > 0) {
+              const isAdmin = localStorage.getItem('grill_island_is_admin');
+              if (isAdmin && hasUnsyncedChanges) {
+                // Admin is editing local draft
+              } else {
+                MENU_DATA = res.data;
+                localStorage.setItem('grill_island_menu_data', JSON.stringify(res.data));
+                renderPhoneMenus();
+                if (document.getElementById('adminPortalModal') && !document.getElementById('adminPortalModal').classList.contains('hidden')) {
+                  renderAdminItemList();
+                }
+              }
+              updateFirebaseStatusUI(true);
+            }
+          } catch (e) {
+            console.warn('Firebase realtime stream parse error:', e);
+          }
+        });
+
+        activeFirebaseEventSource.onopen = () => {
+          updateFirebaseStatusUI(true);
+        };
+
+        activeFirebaseEventSource.onerror = () => {
+          // Reconnects automatically
+        };
+      } catch (e) {
+        console.warn('EventSource initialization error:', e);
+        updateFirebaseStatusUI(false);
+      }
+    }
+
+    async function saveAndTestFirebase() {
+      const input = document.getElementById('firebaseUrlInput');
+      let url = input.value.trim().replace(/\/+$/, '');
+      if (!url) {
+        localStorage.removeItem('grill_island_firebase_url');
+        if (activeFirebaseEventSource) {
+          activeFirebaseEventSource.close();
+          activeFirebaseEventSource = null;
+        }
+        updateFirebaseStatusUI(false);
+        alert('Firebase URL cleared.');
+        return;
+      }
+
+      if (!url.startsWith('https://')) {
+        alert('Please enter a valid Firebase URL starting with https://\nExample: https://your-project-default-rtdb.firebaseio.com');
+        return;
+      }
+
+      updateFirebaseStatusUI(false, 'Connecting & Testing...');
+
+      try {
+        // Upload current MENU_DATA to Firebase
+        const res = await fetch(url + '/menu.json', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(MENU_DATA)
+        });
+
+        if (res.ok) {
+          localStorage.setItem('grill_island_firebase_url', url);
+          initFirebaseRealtimeSync();
+          updateFirebaseStatusUI(true);
+          updateSyncStatusBadge('synced');
+          hasUnsyncedChanges = false;
+          alert('🔥 SUCCESS! Connected to Firebase!\n\nCurrent menu uploaded. All customer phones scanning your QR code now update in REAL TIME (< 0.3s) whenever you change a price!');
+        } else {
+          throw new Error('Firebase responded with status: ' + res.status);
+        }
+      } catch (err) {
+        updateFirebaseStatusUI(false, 'Connection Failed');
+        alert('❌ Could not connect to Firebase:\n' + err.message + '\n\nMake sure your Firebase Realtime Database rules are set to Test Mode (.read: true, .write: true).');
+      }
+    }
+
     function toggleCloudSettings() {
       const drawer = document.getElementById('cloudSettingsDrawer');
       drawer.classList.toggle('hidden');
@@ -1525,17 +1663,6 @@
       } else {
         localStorage.setItem('grill_island_gh_token', token);
         alert('✅ GitHub Token saved securely on this phone!');
-      }
-    }
-
-    function saveFirebaseUrl() {
-      const url = document.getElementById('firebaseUrlInput').value.trim();
-      if (!url) {
-        localStorage.removeItem('grill_island_firebase_url');
-        alert('Firebase URL cleared.');
-      } else {
-        localStorage.setItem('grill_island_firebase_url', url);
-        alert('✅ Firebase URL saved!');
       }
     }
 
@@ -1567,9 +1694,9 @@
       const fbUrl = localStorage.getItem('grill_island_firebase_url');
 
       if (!ghToken && !fbUrl) {
-        alert('👉 To publish changes directly to all customer phones from your phone, please enter your GitHub Personal Access Token below (or download the menu.json file to upload manually).');
+        alert('👉 To publish changes directly to all customer phones, connect your free Firebase Realtime Database URL below (or enter a GitHub token).');
         document.getElementById('cloudSettingsDrawer').classList.remove('hidden');
-        document.getElementById('ghTokenInput').focus();
+        document.getElementById('firebaseUrlInput').focus();
         return;
       }
 
@@ -1593,7 +1720,7 @@
             body: JSON.stringify(MENU_DATA)
           });
           if (fbRes.ok) {
-            publishedTo.push('Firebase (Instant)');
+            publishedTo.push('Firebase (Instant < 0.3s)');
           }
         } catch (e) {
           console.error('Firebase publish error:', e);
@@ -1663,6 +1790,7 @@
       initLocalMenuData();
       renderPhoneMenus();
       fetchLatestCloudMenu();
+      initFirebaseRealtimeSync();
 
       // Show Instagram prompt after 1.8 seconds
       setTimeout(() => {
