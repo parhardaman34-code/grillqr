@@ -7,6 +7,7 @@
       "config": {
         "includeFiles": [
           "index.html",
+          "menu.json",
           "logo.jpg",
           "instagram-qr.jpg",
           "menu-qr.jpg"
