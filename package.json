@@ -1,12 +1,8 @@
 {
   "name": "qr-grill-island",
   "version": "1.0.0",
-  "description": "Grill Island Artisanal Live Grill & Tandoor Web Application",
-  "main": "server.js",
+  "description": "Grill Island Artisanal Live Grill & Tandoor",
   "scripts": {
     "start": "node server.js"
-  },
-  "keywords": ["grill-island", "menu", "restaurant"],
-  "author": "",
-  "license": "ISC"
+  }
 }
