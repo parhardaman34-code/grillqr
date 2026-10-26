@@ -2,8 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = process.env.PORT || 3000;
-const PUBLIC_DIR = path.join(__dirname, '..');
+const PUBLIC_DIR = __dirname;
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -19,7 +18,7 @@ const MIME_TYPES = {
   '.webp': 'image/webp'
 };
 
-const server = http.createServer((req, res) => {
+function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
 
@@ -29,7 +28,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  let safePath = decodeURI(req.url.split('?')[0]);
+  let safePath = decodeURI((req.url || '/').split('?')[0]);
   if (safePath === '/' || safePath === '') {
     safePath = '/index.html';
   }
@@ -63,18 +62,26 @@ const server = http.createServer((req, res) => {
     fs.readFile(filePath, (readErr, content) => {
       if (readErr) {
         res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-        res.end('500 Internal Server Error');
+        res.end('500 Internal Error');
         return;
       }
       res.writeHead(200, { 'Content-Type': contentType });
       res.end(content);
     });
   });
-});
+}
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n========================================`);
-  console.log(`  Grill Island Local Server is Running!`);
-  console.log(`  Local URL:    http://localhost:${PORT}`);
-  console.log(`========================================\n`);
-});
+// Export for Vercel Serverless Function runtime
+module.exports = handler;
+
+// Local development server runner
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  const server = http.createServer(handler);
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n========================================`);
+    console.log(`  Grill Island Server is Running!`);
+    console.log(`  Local URL: http://localhost:${PORT}`);
+    console.log(`========================================\n`);
+  });
+}
