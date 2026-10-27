@@ -242,19 +242,48 @@
           <div class="w-full flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-brand-gold text-[20px]">room_service</span>
-              <h3 class="font-title font-bold text-base text-on-surface">Your Table Tray</h3>
+              <h3 class="font-title font-bold text-base text-on-surface">Your Tray</h3>
               <span class="text-[11px] bg-brand-gold text-surface-lowest font-bold px-2 py-0.5 rounded-full" id="modalCountBadge">0 items</span>
             </div>
-            <button onclick="closeCartModal()" class="w-8 h-8 rounded-full bg-surface-high flex items-center justify-center text-on-muted hover:text-on-surface">
-              <span class="material-symbols-outlined text-[18px]">close</span>
+            <div class="flex items-center gap-2">
+              <button onclick="clearCustomerCart()" class="text-[11px] text-red-400 hover:text-red-300 font-semibold px-2.5 py-1 rounded-xl bg-surface-low border border-surface-high/60 active:scale-95 transition-all" title="Clear All Items">
+                Clear
+              </button>
+              <button onclick="closeCartModal()" class="w-8 h-8 rounded-full bg-surface-high flex items-center justify-center text-on-muted hover:text-on-surface" title="Close">
+                <span class="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Type Segmented Selector: Dine-In vs Takeaway -->
+        <div class="mb-2.5">
+          <div class="grid grid-cols-2 gap-1.5 p-1 bg-surface-low rounded-2xl border border-surface-high">
+            <button 
+              type="button" 
+              id="btnOrderTypeDineIn" 
+              onclick="setOrderType('dine_in')" 
+              class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all bg-brand-gold text-surface-lowest shadow-sm"
+            >
+              <span class="material-symbols-outlined text-[16px]">restaurant</span>
+              <span>Dine-In</span>
+            </button>
+            <button 
+              type="button" 
+              id="btnOrderTypeTakeaway" 
+              onclick="setOrderType('takeaway')" 
+              class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all text-on-muted hover:text-on-surface"
+            >
+              <span class="material-symbols-outlined text-[16px]">takeout_dining</span>
+              <span>Takeaway / Parcel</span>
             </button>
           </div>
         </div>
 
-        <!-- Table No. Input -->
+        <!-- Location / Customer Details Input -->
         <div class="mb-3">
-          <div class="flex items-center gap-2 p-2 rounded-xl bg-surface-low border border-surface-high">
-            <span class="material-symbols-outlined text-brand-gold text-[18px]">table_restaurant</span>
+          <div class="flex items-center gap-2 p-2.5 rounded-xl bg-surface-low border border-surface-high">
+            <span class="material-symbols-outlined text-brand-gold text-[18px]" id="orderTypeIcon">table_restaurant</span>
             <input 
               type="text" 
               id="tableInput" 
@@ -1070,6 +1099,40 @@
       }, 1200);
     }
 
+    // DINE-IN VS TAKEAWAY ORDER STATE
+    let currentOrderType = 'dine_in';
+
+    function setOrderType(type) {
+      currentOrderType = type;
+      const btnDine = document.getElementById('btnOrderTypeDineIn');
+      const btnTake = document.getElementById('btnOrderTypeTakeaway');
+      const icon = document.getElementById('orderTypeIcon');
+      const input = document.getElementById('tableInput');
+
+      if (type === 'dine_in') {
+        if (btnDine) btnDine.className = 'py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all bg-brand-gold text-surface-lowest shadow-sm';
+        if (btnTake) btnTake.className = 'py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all text-on-muted hover:text-on-surface';
+        if (icon) icon.textContent = 'table_restaurant';
+        if (input) input.placeholder = 'Table Number (e.g. Table 4 / Counter)';
+      } else {
+        if (btnTake) btnTake.className = 'py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all bg-brand-gold text-surface-lowest shadow-sm';
+        if (btnDine) btnDine.className = 'py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all text-on-muted hover:text-on-surface';
+        if (icon) icon.textContent = 'takeout_dining';
+        if (input) input.placeholder = 'Customer Name / Contact (Parcel Pickup)';
+      }
+    }
+
+    function clearCustomerCart() {
+      if (Object.keys(cart).length === 0) return;
+      if (confirm('Clear all items from your tray?')) {
+        for (const k in cart) {
+          delete cart[k];
+        }
+        updateCartUI();
+        renderPhoneMenus();
+      }
+    }
+
     // WHATSAPP ORDER (NO GST, DIRECT)
     function sendOrderWhatsApp() {
       const keys = Object.keys(cart);
@@ -1077,9 +1140,20 @@
         alert('Your tray is empty! Please add dishes first.');
         return;
       }
-      const table = document.getElementById('tableInput').value.trim() || 'Dine-In Table';
-      let message = `*GRILL ISLAND PHAGWARA - TABLE ORDER*\n`;
-      message += `📍 Table/Counter: ${table}\n\n`;
+
+      const isDineIn = currentOrderType === 'dine_in';
+      const detail = document.getElementById('tableInput').value.trim();
+
+      let message = `*GRILL ISLAND PHAGWARA - NEW ORDER*\n`;
+      message += `━━━━━━━━━━━━━━━━━━━━━\n`;
+      if (isDineIn) {
+        message += `🍽️ *ORDER TYPE:* DINE-IN\n`;
+        message += `📍 *TABLE/LOCATION:* ${detail || 'Table / Dine-In'}\n`;
+      } else {
+        message += `🛍️ *ORDER TYPE:* TAKEAWAY (PARCEL / PICKUP)\n`;
+        message += `👤 *CUSTOMER/NOTE:* ${detail || 'Walk-in Takeaway'}\n`;
+      }
+      message += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
       message += `*ORDER ITEMS:*\n`;
 
       let total = 0;
@@ -1090,12 +1164,25 @@
         message += `${idx + 1}. ${name} x ${item.qty} = ₹${line}\n`;
       });
 
-      message += `\n*TOTAL PAYABLE:* ₹${total.toFixed(2)}\n`;
-      message += `\n_Live hearth order sent from table phone._`;
+      message += `\n━━━━━━━━━━━━━━━━━━━━━\n`;
+      message += `💰 *TOTAL PAYABLE:* ₹${total.toFixed(2)}\n`;
+      message += `━━━━━━━━━━━━━━━━━━━━━\n`;
+      message += `\n_Live hearth order sent from customer phone._`;
 
       const url = `https://wa.me/919855381984?text=${encodeURIComponent(message)}`;
       window.open(url, '_blank');
-      
+
+      // RESET THE CART AND RESTORE ALL "ADD TO CART" BUTTONS
+      for (const k in cart) {
+        delete cart[k];
+      }
+      const tableInput = document.getElementById('tableInput');
+      if (tableInput) tableInput.value = '';
+      setOrderType('dine_in');
+      updateCartUI();
+      renderPhoneMenus();
+      closeCartModal();
+
       setTimeout(() => {
         openInstaPrompt();
       }, 1500);
