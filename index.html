@@ -256,26 +256,35 @@
           </div>
         </div>
 
-        <!-- Order Type Segmented Selector: Dine-In vs Takeaway -->
+        <!-- Order Type Segmented Selector: Dine-In vs Delivery vs Takeaway -->
         <div class="mb-2.5">
-          <div class="grid grid-cols-2 gap-1.5 p-1 bg-surface-low rounded-2xl border border-surface-high">
+          <div class="grid grid-cols-3 gap-1 p-1 bg-surface-low rounded-2xl border border-surface-high">
             <button 
               type="button" 
               id="btnOrderTypeDineIn" 
               onclick="setOrderType('dine_in')" 
-              class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all bg-brand-gold text-surface-lowest shadow-sm"
+              class="py-2 px-1.5 rounded-xl text-[11px] font-bold flex items-center justify-center gap-1 transition-all bg-brand-gold text-surface-lowest shadow-sm"
             >
-              <span class="material-symbols-outlined text-[16px]">restaurant</span>
+              <span class="material-symbols-outlined text-[15px]">restaurant</span>
               <span>Dine-In</span>
+            </button>
+            <button 
+              type="button" 
+              id="btnOrderTypeDelivery" 
+              onclick="setOrderType('delivery')" 
+              class="py-2 px-1.5 rounded-xl text-[11px] font-bold flex items-center justify-center gap-1 transition-all text-on-muted hover:text-on-surface"
+            >
+              <span class="material-symbols-outlined text-[15px]">moped</span>
+              <span>Delivery</span>
             </button>
             <button 
               type="button" 
               id="btnOrderTypeTakeaway" 
               onclick="setOrderType('takeaway')" 
-              class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all text-on-muted hover:text-on-surface"
+              class="py-2 px-1.5 rounded-xl text-[11px] font-bold flex items-center justify-center gap-1 transition-all text-on-muted hover:text-on-surface"
             >
-              <span class="material-symbols-outlined text-[16px]">takeout_dining</span>
-              <span>Takeaway / Parcel</span>
+              <span class="material-symbols-outlined text-[15px]">takeout_dining</span>
+              <span>Takeaway</span>
             </button>
           </div>
         </div>
@@ -1099,24 +1108,31 @@
       }, 1200);
     }
 
-    // DINE-IN VS TAKEAWAY ORDER STATE
+    // DINE-IN VS DELIVERY VS TAKEAWAY ORDER STATE
     let currentOrderType = 'dine_in';
 
     function setOrderType(type) {
       currentOrderType = type;
       const btnDine = document.getElementById('btnOrderTypeDineIn');
+      const btnDelivery = document.getElementById('btnOrderTypeDelivery');
       const btnTake = document.getElementById('btnOrderTypeTakeaway');
       const icon = document.getElementById('orderTypeIcon');
       const input = document.getElementById('tableInput');
 
+      const activeClass = 'py-2 px-1.5 rounded-xl text-[11px] font-bold flex items-center justify-center gap-1 transition-all bg-brand-gold text-surface-lowest shadow-sm';
+      const inactiveClass = 'py-2 px-1.5 rounded-xl text-[11px] font-bold flex items-center justify-center gap-1 transition-all text-on-muted hover:text-on-surface';
+
+      if (btnDine) btnDine.className = type === 'dine_in' ? activeClass : inactiveClass;
+      if (btnDelivery) btnDelivery.className = type === 'delivery' ? activeClass : inactiveClass;
+      if (btnTake) btnTake.className = type === 'takeaway' ? activeClass : inactiveClass;
+
       if (type === 'dine_in') {
-        if (btnDine) btnDine.className = 'py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all bg-brand-gold text-surface-lowest shadow-sm';
-        if (btnTake) btnTake.className = 'py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all text-on-muted hover:text-on-surface';
         if (icon) icon.textContent = 'table_restaurant';
         if (input) input.placeholder = 'Table Number (e.g. Table 4 / Counter)';
+      } else if (type === 'delivery') {
+        if (icon) icon.textContent = 'home_pin';
+        if (input) input.placeholder = 'Delivery Address & Phone (House/Colony)';
       } else {
-        if (btnTake) btnTake.className = 'py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all bg-brand-gold text-surface-lowest shadow-sm';
-        if (btnDine) btnDine.className = 'py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all text-on-muted hover:text-on-surface';
         if (icon) icon.textContent = 'takeout_dining';
         if (input) input.placeholder = 'Customer Name / Contact (Parcel Pickup)';
       }
@@ -1141,19 +1157,20 @@
         return;
       }
 
-      const isDineIn = currentOrderType === 'dine_in';
       const detail = document.getElementById('tableInput').value.trim();
 
-      let message = `*GRILL ISLAND PHAGWARA - NEW ORDER*\n`;
-      message += `━━━━━━━━━━━━━━━━━━━━━\n`;
-      if (isDineIn) {
-        message += `🍽️ *ORDER TYPE:* DINE-IN\n`;
-        message += `📍 *TABLE/LOCATION:* ${detail || 'Table / Dine-In'}\n`;
+      let message = `*GRILL ISLAND PHAGWARA - NEW ORDER*\n\n`;
+      if (currentOrderType === 'dine_in') {
+        message += `🍽️ *ORDER TYPE:* Dine-In\n`;
+        message += `📍 *TABLE/LOCATION:* ${detail || 'Table / Dine-In'}\n\n`;
+      } else if (currentOrderType === 'delivery') {
+        message += `🛵 *ORDER TYPE:* Home Delivery\n`;
+        message += `📍 *DELIVERY ADDRESS:* ${detail || 'Delivery (Address on call)'}\n\n`;
       } else {
-        message += `🛍️ *ORDER TYPE:* TAKEAWAY (PARCEL / PICKUP)\n`;
-        message += `👤 *CUSTOMER/NOTE:* ${detail || 'Walk-in Takeaway'}\n`;
+        message += `🛍️ *ORDER TYPE:* Takeaway / Parcel\n`;
+        message += `👤 *CUSTOMER/NOTE:* ${detail || 'Walk-in Takeaway'}\n\n`;
       }
-      message += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
+
       message += `*ORDER ITEMS:*\n`;
 
       let total = 0;
@@ -1164,10 +1181,7 @@
         message += `${idx + 1}. ${name} x ${item.qty} = ₹${line}\n`;
       });
 
-      message += `\n━━━━━━━━━━━━━━━━━━━━━\n`;
-      message += `💰 *TOTAL PAYABLE:* ₹${total.toFixed(2)}\n`;
-      message += `━━━━━━━━━━━━━━━━━━━━━\n`;
-      message += `\n_Live hearth order sent from customer phone._`;
+      message += `\n💰 *TOTAL PAYABLE:* ₹${total.toFixed(2)}`;
 
       const url = `https://wa.me/919855381984?text=${encodeURIComponent(message)}`;
       window.open(url, '_blank');
