@@ -152,190 +152,13 @@
     <!-- HORIZONTAL CATEGORY SCROLLER PILLS -->
     <div class="sticky top-[108px] z-30 bg-background/95 backdrop-blur-md border-b border-surface-high/60 py-2 px-4 shadow-md">
       <nav class="flex items-center gap-1.5 overflow-x-auto scrollbar-none" id="categoryNav">
-        <button class="cat-pill active px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-brand-gold text-surface-lowest shadow-sm transition-all" onclick="scrollToCategory('sec-burger', this)">🍔 Burger</button>
-        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-sandwich', this)">🥪 Sandwich</button>
-        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-wraps', this)">🌯 Wraps</button>
-        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-marine', this)">⭐ Marine</button>
-        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-pasta', this)">🍝 Pasta</button>
-        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-chaap', this)">🔥 Chaap</button>
-        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-chinese', this)">🥢 Chinese</button>
-        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-salad', this)">🥗 Salad</button>
-        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-fries', this)">🍟 Fries</button>
-        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-pizza', this)">🍕 Pizza</button>
-        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-shake', this)">🥤 Shakes</button>
-        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-mocktail', this)">🍹 Mocktails</button>
-        <button class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-surface-card text-on-muted hover:text-on-surface transition-all" onclick="scrollToCategory('sec-slush', this)">🍧 Slush</button>
       </nav>
     </div>
 
     <!-- MAIN MENU LIST -->
     <main class="px-4 py-3 flex flex-col gap-6" id="menuContainer">
 
-      <!-- 01. BURGER -->
-      <section class="menu-section scroll-mt-36" id="sec-burger" data-cat="burger">
-        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">01</span>
-            <h2 class="font-title font-bold text-lg text-on-surface">BURGER</h2>
-          </div>
-          <span class="text-[11px] text-on-muted item-count-badge"></span>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-burger"></div>
-      </section>
-
-      <!-- 02. SANDWICH -->
-      <section class="menu-section scroll-mt-36" id="sec-sandwich" data-cat="sandwich">
-        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">02</span>
-            <h2 class="font-title font-bold text-lg text-on-surface">SANDWICH</h2>
-          </div>
-          <span class="text-[11px] text-on-muted item-count-badge"></span>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-sandwich"></div>
-      </section>
-
-      <!-- 03. WRAPS -->
-      <section class="menu-section scroll-mt-36" id="sec-wraps" data-cat="wraps">
-        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">03</span>
-            <h2 class="font-title font-bold text-lg text-on-surface">WRAPS</h2>
-          </div>
-          <span class="text-[11px] text-on-muted item-count-badge"></span>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-wraps"></div>
-      </section>
-
-      <!-- 04. MARINE -->
-      <section class="menu-section scroll-mt-36" id="sec-marine" data-cat="marine">
-        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">04</span>
-            <h2 class="font-title font-bold text-lg text-on-surface">MARINE</h2>
-          </div>
-          <span class="text-[10px] text-brand-gold font-bold uppercase tracking-wider bg-surface-card px-2 py-0.5 rounded">House Specialty</span>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-marine"></div>
-      </section>
-
-      <!-- 05. PASTA -->
-      <section class="menu-section scroll-mt-36" id="sec-pasta" data-cat="pasta">
-        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">05</span>
-            <h2 class="font-title font-bold text-lg text-on-surface">PASTA</h2>
-          </div>
-          <span class="text-[11px] text-brand-gold">Half / Full Portions</span>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-pasta"></div>
-      </section>
-
-      <!-- 06. CHAAP -->
-      <section class="menu-section scroll-mt-36" id="sec-chaap" data-cat="chaap">
-        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">06</span>
-            <h2 class="font-title font-bold text-lg text-on-surface">CHAAP &amp; TANDOOR</h2>
-          </div>
-          <span class="text-[11px] text-brand-gold">Sigri Roasted</span>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-chaap"></div>
-      </section>
-
-      <!-- 07. CHINESE -->
-      <section class="menu-section scroll-mt-36" id="sec-chinese" data-cat="chinese">
-        <div class="flex flex-col pb-1.5 mb-2 border-b border-surface-high gap-0.5">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">07</span>
-              <h2 class="font-title font-bold text-lg text-on-surface">CHINESE</h2>
-            </div>
-            <span class="text-[10px] text-veg-green font-bold uppercase tracking-wider bg-veg-green/10 px-2 py-0.5 rounded border border-veg-green/30">Without Ajinomoto</span>
-          </div>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-chinese"></div>
-      </section>
-
-      <!-- 08. SALAD -->
-      <section class="menu-section scroll-mt-36" id="sec-salad" data-cat="salad">
-        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">08</span>
-            <h2 class="font-title font-bold text-lg text-on-surface">SALAD</h2>
-          </div>
-          <span class="text-[11px] text-on-muted">Fresh Garden</span>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-salad"></div>
-      </section>
-
-      <!-- 09. FRIES -->
-      <section class="menu-section scroll-mt-36" id="sec-fries" data-cat="fries">
-        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">09</span>
-            <h2 class="font-title font-bold text-lg text-on-surface">FRIES &amp; BITES</h2>
-          </div>
-          <span class="text-[11px] text-brand-gold">S / M / L Portions</span>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-fries"></div>
-      </section>
-
-      <!-- 10. PIZZA -->
-      <section class="menu-section scroll-mt-36" id="sec-pizza" data-cat="pizza">
-        <div class="flex flex-col pb-1.5 mb-2 border-b border-surface-high gap-1.5">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">10</span>
-              <h2 class="font-title font-bold text-lg text-on-surface">PIZZA</h2>
-            </div>
-            <span class="text-[11px] text-brand-gold">Reg / Large</span>
-          </div>
-          <div class="p-2 rounded-lg bg-surface-card border border-brand-gold/20 text-[11px] text-brand-gold leading-tight">
-            🔥 <strong>Flavour Upgrade:</strong> Pay ₹10 &amp; ₹20 extra for Makhani, Achari &amp; Tandoori flavours!
-          </div>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-pizza"></div>
-      </section>
-
-      <!-- 11. SHAKE -->
-      <section class="menu-section scroll-mt-36" id="sec-shake" data-cat="shake">
-        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">11</span>
-            <h2 class="font-title font-bold text-lg text-on-surface">SHAKE</h2>
-          </div>
-          <span class="text-[11px] text-on-muted">Thick Dairy Shakes</span>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-shake"></div>
-      </section>
-
-      <!-- 12. MOCKTAIL -->
-      <section class="menu-section scroll-mt-36" id="sec-mocktail" data-cat="mocktail">
-        <div class="flex flex-col pb-1.5 mb-2 border-b border-surface-high gap-0.5">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">12</span>
-              <h2 class="font-title font-bold text-lg text-on-surface">MOCKTAIL &amp; COOLERS</h2>
-            </div>
-            <span class="text-xs font-bold text-brand-gold">₹80 each</span>
-          </div>
-          <span class="text-[10px] text-on-muted italic">*All branded beverages served at printed MRP.</span>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-mocktail"></div>
-      </section>
-
-      <!-- 13. SLUSH -->
-      <section class="menu-section scroll-mt-36" id="sec-slush" data-cat="slush">
-        <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">13</span>
-            <h2 class="font-title font-bold text-lg text-on-surface">FROST SLUSH</h2>
-          </div>
-          <span class="text-[11px] text-on-muted">Iced Flavours</span>
-        </div>
-        <div class="flex flex-col gap-2" id="grid-slush"></div>
-      </section>
+      <div id='dynamicSectionsContainer' class='flex flex-col gap-6'></div>
 
       <!-- INSTAGRAM QR CARD AT THE END OF MENU -->
       <section class="mt-4 mb-2 p-5 rounded-2xl bg-gradient-to-b from-surface-card via-surface-card to-surface-high border border-surface-high text-center flex flex-col items-center gap-3.5 shadow-xl">
@@ -566,31 +389,45 @@
           </button>
         </div>
 
-        <!-- Category Selector Dropdown & Actions -->
-        <div class="flex items-center justify-between gap-2 mb-3">
-          <div class="flex items-center gap-1.5 flex-1">
-            <span class="text-[11px] text-on-muted">Category:</span>
-            <select id="adminCategorySelect" onchange="renderAdminItemList()" class="bg-surface-low text-brand-gold font-bold text-xs py-1.5 px-2.5 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold flex-1">
-              <option value="burger">01. Burger</option>
-              <option value="sandwich">02. Sandwich</option>
-              <option value="wraps">03. Wraps</option>
-              <option value="marine">04. Marine</option>
-              <option value="pasta">05. Pasta</option>
-              <option value="chaap">06. Chaap</option>
-              <option value="chinese">07. Chinese</option>
-              <option value="salad">08. Salad</option>
-              <option value="fries">09. Fries</option>
-              <option value="pizza">10. Pizza</option>
-              <option value="shake">11. Shake</option>
-              <option value="mocktail">12. Mocktail</option>
-              <option value="slush">13. Slush</option>
-            </select>
+        <!-- Category Selector & Manager Actions -->
+        <div class="flex flex-col gap-2 mb-3 bg-surface-low/80 p-2.5 rounded-2xl border border-surface-high/60">
+          <div class="flex items-center justify-between gap-1.5">
+            <div class="flex items-center gap-1.5 flex-1 min-w-0">
+              <span class="text-[11px] text-on-muted shrink-0 font-medium">Category:</span>
+              <select id="adminCategorySelect" onchange="onAdminCategoryChange()" class="bg-surface-card text-brand-gold font-bold text-xs py-1.5 px-2 rounded-xl border border-surface-high focus:outline-none focus:ring-1 focus:ring-brand-gold flex-1 truncate">
+              </select>
+            </div>
+
+            <!-- Category Edit, Reorder & Delete Actions -->
+            <div class="flex items-center gap-1 shrink-0">
+              <button onclick="moveCurrentCategory(-1)" class="w-7 h-7 bg-surface-card hover:bg-surface-high text-on-muted hover:text-on-surface rounded-xl border border-surface-high flex items-center justify-center active:scale-90 transition-all" title="Move Category Up">
+                <span class="material-symbols-outlined text-[15px]">arrow_upward</span>
+              </button>
+              <button onclick="moveCurrentCategory(1)" class="w-7 h-7 bg-surface-card hover:bg-surface-high text-on-muted hover:text-on-surface rounded-xl border border-surface-high flex items-center justify-center active:scale-90 transition-all" title="Move Category Down">
+                <span class="material-symbols-outlined text-[15px]">arrow_downward</span>
+              </button>
+              <button onclick="renameCurrentCategory()" class="px-2 py-1 bg-surface-card hover:bg-surface-high text-brand-gold rounded-xl border border-surface-high active:scale-90 transition-all flex items-center gap-1 text-[11px] font-semibold" title="Rename this Category">
+                <span class="material-symbols-outlined text-[15px]">edit</span>
+                <span>Rename</span>
+              </button>
+              <button onclick="deleteCurrentCategory()" class="w-7 h-7 bg-surface-card hover:bg-surface-high text-red-400 rounded-xl border border-surface-high flex items-center justify-center active:scale-90 transition-all" title="Delete this Category">
+                <span class="material-symbols-outlined text-[15px]">delete</span>
+              </button>
+            </div>
           </div>
 
-          <button onclick="toggleAddItemForm()" class="px-3 py-1.5 bg-brand-gold text-surface-lowest rounded-xl font-bold text-xs flex items-center gap-1 active:scale-95 transition-all shadow-sm">
-            <span class="material-symbols-outlined text-[16px]">add_circle</span>
-            <span>Add Item</span>
-          </button>
+          <!-- Bottom Action Buttons: Add Category & Add Dish -->
+          <div class="flex items-center gap-2 pt-1.5 border-t border-surface-high/40">
+            <button onclick="promptAddNewCategory()" class="flex-1 py-1.5 bg-surface-card hover:bg-surface-high text-brand-gold border border-brand-gold/40 rounded-xl font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-[16px]">create_new_folder</span>
+              <span>+ New Category</span>
+            </button>
+
+            <button onclick="toggleAddItemForm()" class="flex-1 py-1.5 bg-brand-gold hover:bg-brand-gold-light text-surface-lowest rounded-xl font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all shadow-sm">
+              <span class="material-symbols-outlined text-[16px]">add_circle</span>
+              <span>+ Add Dish</span>
+            </button>
+          </div>
         </div>
 
         <!-- Collapsible Add Item Form -->
@@ -645,8 +482,26 @@
 
   <!-- COMPLETE MENU DATA & JAVASCRIPT CONTROLLERS -->
   <script>
+    // DEFAULT CATEGORIES
+    const DEFAULT_CATEGORIES = [
+      { id: "burger", name: "Burger", emoji: "🍔" },
+      { id: "sandwich", name: "Sandwich", emoji: "🥪" },
+      { id: "wraps", name: "Wraps", emoji: "🌯" },
+      { id: "marine", name: "Marine", emoji: "⭐" },
+      { id: "pasta", name: "Pasta", emoji: "🍝" },
+      { id: "chaap", name: "Chaap", emoji: "🔥" },
+      { id: "chinese", name: "Chinese", emoji: "🥢" },
+      { id: "salad", name: "Salad", emoji: "🥗" },
+      { id: "fries", name: "Fries", emoji: "🍟" },
+      { id: "pizza", name: "Pizza", emoji: "🍕" },
+      { id: "shake", name: "Shakes", emoji: "🥤" },
+      { id: "mocktail", name: "Mocktails", emoji: "🍹" },
+      { id: "slush", name: "Frost Slush", emoji: "🍧" }
+    ];
+
     // DEFAULT MENU DATABASE (100% Physical Menu Cards)
     const DEFAULT_MENU_DATA = {
+      _categories: JSON.parse(JSON.stringify(DEFAULT_CATEGORIES)),
       burger: [
         { name: "Veg. Burger", price: 50 },
         { name: "Creamy Burger", price: 60 },
@@ -806,6 +661,26 @@
       } catch (e) {
         MENU_DATA = JSON.parse(JSON.stringify(DEFAULT_MENU_DATA));
       }
+      if (!MENU_DATA._categories) {
+        MENU_DATA._categories = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES));
+      }
+    }
+
+    function getCategoriesList() {
+      if (!Array.isArray(MENU_DATA._categories) || MENU_DATA._categories.length === 0) {
+        MENU_DATA._categories = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES));
+      }
+      // Guarantee all custom categories in MENU_DATA exist in _categories list
+      const existingIds = new Set(MENU_DATA._categories.map(c => c.id));
+      for (const key of Object.keys(MENU_DATA)) {
+        if (key.startsWith('_')) continue;
+        if (!existingIds.has(key)) {
+          const autoName = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          MENU_DATA._categories.push({ id: key, name: autoName, emoji: "🍽️" });
+          existingIds.add(key);
+        }
+      }
+      return MENU_DATA._categories;
     }
 
     async function fetchLatestCloudMenu() {
@@ -822,11 +697,14 @@
               if (isAdmin && hasUnsyncedChanges) {
                 // Admin has unsynced local drafts, keep them
               } else {
+                if (!data._categories) {
+                  data._categories = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES));
+                }
                 MENU_DATA = data;
                 localStorage.setItem('grill_island_menu_data', JSON.stringify(data));
                 renderPhoneMenus();
                 if (document.getElementById('adminPortalModal') && !document.getElementById('adminPortalModal').classList.contains('hidden')) {
-                  renderAdminItemList();
+                  renderAdminCategoryDropdown(document.getElementById('adminCategorySelect')?.value);
                 }
               }
               return;
@@ -847,11 +725,14 @@
             if (isAdmin && hasUnsyncedChanges) {
               // Admin has unsynced local drafts, keep them
             } else {
+              if (!data._categories) {
+                data._categories = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES));
+              }
               MENU_DATA = data;
               localStorage.setItem('grill_island_menu_data', JSON.stringify(data));
               renderPhoneMenus();
               if (document.getElementById('adminPortalModal') && !document.getElementById('adminPortalModal').classList.contains('hidden')) {
-                renderAdminItemList();
+                renderAdminCategoryDropdown(document.getElementById('adminCategorySelect')?.value);
               }
             }
           }
@@ -886,89 +767,130 @@
     // CART STATE
     const cart = {};
 
+    function escapeHtmlQuotes(str) {
+      return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
+    function renderCategoryNav(categories) {
+      const nav = document.getElementById('categoryNav');
+      if (!nav) return;
+
+      let html = '';
+      categories.forEach((cat, idx) => {
+        const isActive = idx === 0 ? 'bg-brand-gold text-surface-lowest active' : 'bg-surface-card text-on-muted hover:text-on-surface';
+        html += `
+          <button class="cat-pill ${isActive} px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-all" onclick="scrollToCategory('sec-${cat.id}', this)">
+            ${cat.emoji ? cat.emoji + ' ' : ''}${cat.name}
+          </button>
+        `;
+      });
+      nav.innerHTML = html;
+    }
+
     function renderPhoneMenus() {
-      for (const [category, items] of Object.entries(MENU_DATA)) {
-        const grid = document.getElementById(`grid-${category}`);
-        if (!grid) continue;
+      const categories = getCategoriesList();
+      renderCategoryNav(categories);
 
-        // Update item count badge
-        const badge = document.querySelector(`#sec-${category} .item-count-badge`);
-        if (badge) {
-          badge.textContent = `${items.length} items`;
-        }
+      const container = document.getElementById('dynamicSectionsContainer');
+      if (!container) return;
 
-        let html = '';
-        items.forEach((item, itemIdx) => {
-          if (item.variants) {
-            // Variant based (Half/Full, S/M/L, Reg/Large)
-            const chipsHtml = item.variants.map((v, vIdx) => {
-              const fullItemName = `${item.name} (${v.label})`;
-              const currentQty = cart[fullItemName]?.qty || 0;
-              return `
-                <div class="flex items-center gap-1 bg-surface-high/60 rounded-lg p-1 border border-surface-highest/60">
-                  <span class="text-[11px] font-bold text-on-surface px-1">${v.label} <span class="text-brand-gold">₹${v.price}</span></span>
-                  ${currentQty > 0 ? `
-                    <div class="flex items-center bg-brand-gold text-surface-lowest rounded-md font-bold text-xs px-1">
-                      <button onclick="changeQty('${fullItemName}', -1)" class="px-1 py-0.5 active:scale-90">-</button>
-                      <span class="px-1 text-[11px]">${currentQty}</span>
-                      <button onclick="changeQty('${fullItemName}', 1)" class="px-1 py-0.5 active:scale-90">+</button>
-                    </div>
-                  ` : `
-                    <button onclick="addToOrder('${fullItemName}', ${v.price})" class="px-2 py-0.5 bg-brand-gold/15 hover:bg-brand-gold text-brand-gold hover:text-surface-lowest rounded-md text-[11px] font-bold border border-brand-gold/30 active:scale-95 transition-all">
-                      + Add
-                    </button>
-                  `}
-                </div>
-              `;
-            }).join('');
+      let sectionsHtml = '';
+      categories.forEach((cat, idx) => {
+        const items = MENU_DATA[cat.id] || [];
+        const numStr = String(idx + 1).padStart(2, '0');
 
-            html += `
-              <div class="menu-card bg-surface-card p-3 rounded-2xl border border-surface-high flex flex-col gap-2" data-name="${item.name.toLowerCase()}">
-                <div class="flex items-center gap-2">
-                  <span class="w-3.5 h-3.5 rounded-[3px] border border-green-600 flex items-center justify-center p-[1px] shrink-0">
-                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                  </span>
-                  <span class="font-bold text-xs text-on-surface leading-tight">${item.name}</span>
-                </div>
-                <div class="flex flex-wrap items-center gap-1.5 justify-end pt-1">
-                  ${chipsHtml}
-                </div>
-              </div>
-            `;
-          } else {
-            // Single price item
-            const currentQty = cart[item.name]?.qty || 0;
-            html += `
-              <div class="menu-card bg-surface-card p-3 rounded-2xl border border-surface-high flex items-center justify-between gap-2" data-name="${item.name.toLowerCase()}">
-                <div class="flex items-center gap-2 min-w-0">
-                  <span class="w-3.5 h-3.5 rounded-[3px] border border-green-600 flex items-center justify-center p-[1px] shrink-0">
-                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                  </span>
-                  <div class="flex flex-col min-w-0">
-                    <span class="font-bold text-xs text-on-surface truncate leading-tight">${item.name}</span>
-                    <span class="font-bold text-brand-gold text-xs">₹${item.price}</span>
+        let itemsHtml = '';
+        if (items.length === 0) {
+          itemsHtml = `<div class="text-xs text-on-muted py-4 text-center italic bg-surface-card/40 rounded-2xl border border-surface-high/40">No dishes currently in ${cat.name}.</div>`;
+        } else {
+          items.forEach((item) => {
+            if (item.variants) {
+              // Variant based (Half/Full, S/M/L, Reg/Large)
+              const chipsHtml = item.variants.map((v) => {
+                const fullItemName = `${item.name} (${v.label})`;
+                const currentQty = cart[fullItemName]?.qty || 0;
+                return `
+                  <div class="flex items-center gap-1 bg-surface-high/60 rounded-lg p-1 border border-surface-highest/60">
+                    <span class="text-[11px] font-bold text-on-surface px-1">${v.label} <span class="text-brand-gold">₹${v.price}</span></span>
+                    ${currentQty > 0 ? `
+                      <div class="flex items-center bg-brand-gold text-surface-lowest rounded-md font-bold text-xs px-1">
+                        <button onclick="changeQty('${escapeHtmlQuotes(fullItemName)}', -1)" class="px-1 py-0.5 active:scale-90">-</button>
+                        <span class="px-1 text-[11px]">${currentQty}</span>
+                        <button onclick="changeQty('${escapeHtmlQuotes(fullItemName)}', 1)" class="px-1 py-0.5 active:scale-90">+</button>
+                      </div>
+                    ` : `
+                      <button onclick="addToOrder('${escapeHtmlQuotes(fullItemName)}', ${v.price})" class="px-2 py-0.5 bg-brand-gold/15 hover:bg-brand-gold text-brand-gold hover:text-surface-lowest rounded-md text-[11px] font-bold border border-brand-gold/30 active:scale-95 transition-all">
+                        + Add
+                      </button>
+                    `}
+                  </div>
+                `;
+              }).join('');
+
+              itemsHtml += `
+                <div class="menu-card bg-surface-card p-3 rounded-2xl border border-surface-high flex flex-col gap-2" data-name="${item.name.toLowerCase()}">
+                  <div class="flex items-center gap-2">
+                    <span class="w-3.5 h-3.5 rounded-[3px] border border-green-600 flex items-center justify-center p-[1px] shrink-0">
+                      <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                    </span>
+                    <span class="font-bold text-xs text-on-surface leading-tight">${item.name}</span>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-1.5 justify-end pt-1">
+                    ${chipsHtml}
                   </div>
                 </div>
-                
-                <div class="shrink-0">
-                  ${currentQty > 0 ? `
-                    <div class="flex items-center bg-brand-gold text-surface-lowest rounded-xl font-bold text-xs px-2 py-1 shadow-sm">
-                      <button onclick="changeQty('${item.name}', -1)" class="px-1.5 py-0.5 active:scale-90">-</button>
-                      <span class="px-2 text-xs">${currentQty}</span>
-                      <button onclick="changeQty('${item.name}', 1)" class="px-1.5 py-0.5 active:scale-90">+</button>
+              `;
+            } else {
+              // Single price item
+              const currentQty = cart[item.name]?.qty || 0;
+              itemsHtml += `
+                <div class="menu-card bg-surface-card p-3 rounded-2xl border border-surface-high flex items-center justify-between gap-2" data-name="${item.name.toLowerCase()}">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-3.5 h-3.5 rounded-[3px] border border-green-600 flex items-center justify-center p-[1px] shrink-0">
+                      <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                    </span>
+                    <div class="flex flex-col min-w-0">
+                      <span class="font-bold text-xs text-on-surface truncate leading-tight">${item.name}</span>
+                      <span class="font-bold text-brand-gold text-xs">₹${item.price}</span>
                     </div>
-                  ` : `
-                    <button onclick="addToOrder('${item.name}', ${item.price})" class="px-3.5 py-1.5 bg-brand-gold/15 hover:bg-brand-gold text-brand-gold hover:text-surface-lowest font-bold text-xs rounded-xl border border-brand-gold/30 flex items-center gap-1 active:scale-95 transition-all">
-                      <span class="material-symbols-outlined text-[14px]">add</span> Add
-                    </button>
-                  `}
+                  </div>
+                  
+                  <div class="shrink-0">
+                    ${currentQty > 0 ? `
+                      <div class="flex items-center bg-brand-gold text-surface-lowest rounded-xl font-bold text-xs px-2 py-1 shadow-sm">
+                        <button onclick="changeQty('${escapeHtmlQuotes(item.name)}', -1)" class="px-1.5 py-0.5 active:scale-90">-</button>
+                        <span class="px-2 text-xs">${currentQty}</span>
+                        <button onclick="changeQty('${escapeHtmlQuotes(item.name)}', 1)" class="px-1.5 py-0.5 active:scale-90">+</button>
+                      </div>
+                    ` : `
+                      <button onclick="addToOrder('${escapeHtmlQuotes(item.name)}', ${item.price})" class="px-3.5 py-1.5 bg-brand-gold/15 hover:bg-brand-gold text-brand-gold hover:text-surface-lowest font-bold text-xs rounded-xl border border-brand-gold/30 flex items-center gap-1 active:scale-95 transition-all">
+                        <span class="material-symbols-outlined text-[14px]">add</span> Add
+                      </button>
+                    `}
+                  </div>
                 </div>
+              `;
+            }
+          });
+        }
+
+        sectionsHtml += `
+          <section class="menu-section scroll-mt-36" id="sec-${cat.id}" data-cat="${cat.id}">
+            <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-high">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-brand-gold bg-surface-high px-2 py-0.5 rounded">${numStr}</span>
+                <h2 class="font-title font-bold text-lg text-on-surface uppercase">${cat.name}</h2>
               </div>
-            `;
-          }
-        });
-        grid.innerHTML = html;
-      }
+              <span class="text-[11px] text-on-muted item-count-badge">${items.length} items</span>
+            </div>
+            <div class="flex flex-col gap-2" id="grid-${cat.id}">
+              ${itemsHtml}
+            </div>
+          </section>
+        `;
+      });
+
+      container.innerHTML = sectionsHtml;
     }
 
     function addToOrder(name, price) {
@@ -1231,7 +1153,7 @@
       localStorage.setItem('grill_island_is_admin', '1');
       const portal = document.getElementById('adminPortalModal');
       portal.classList.remove('hidden');
-      renderAdminItemList();
+      renderAdminCategoryDropdown();
       updateSyncStatusBadge(hasUnsyncedChanges ? 'unsynced' : 'synced');
     }
 
@@ -1257,15 +1179,175 @@
       }
     }
 
+    function renderAdminCategoryDropdown(selectedCatId) {
+      const select = document.getElementById('adminCategorySelect');
+      if (!select) return;
+
+      const categories = getCategoriesList();
+      if (categories.length === 0) {
+        select.innerHTML = '<option value="">No Categories</option>';
+        renderAdminItemList();
+        return;
+      }
+
+      let html = '';
+      categories.forEach((cat, idx) => {
+        const num = String(idx + 1).padStart(2, '0');
+        const count = (MENU_DATA[cat.id] || []).length;
+        html += `<option value="${cat.id}">${num}. ${cat.emoji ? cat.emoji + ' ' : ''}${cat.name} (${count})</option>`;
+      });
+      select.innerHTML = html;
+
+      if (selectedCatId && categories.some(c => c.id === selectedCatId)) {
+        select.value = selectedCatId;
+      } else {
+        select.value = categories[0].id;
+      }
+
+      renderAdminItemList();
+    }
+
+    function onAdminCategoryChange() {
+      renderAdminItemList();
+    }
+
+    function moveCurrentCategory(direction) {
+      const select = document.getElementById('adminCategorySelect');
+      if (!select || !select.value) return;
+
+      const catId = select.value;
+      const categories = getCategoriesList();
+      const idx = categories.findIndex(c => c.id === catId);
+      if (idx === -1) return;
+
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= categories.length) return;
+
+      const temp = categories[idx];
+      categories[idx] = categories[targetIdx];
+      categories[targetIdx] = temp;
+
+      saveMenuData();
+      renderAdminCategoryDropdown(catId);
+    }
+
+    function promptAddNewCategory() {
+      const name = prompt("Enter new category name (e.g. Momos, Tandoori Special, Desserts, Beverages):");
+      if (!name || !name.trim()) return;
+
+      const trimmedName = name.trim();
+      const emoji = prompt(`Enter an emoji for "${trimmedName}" (e.g. 🥟, 🍢, 🍰, ☕) or leave as default:`, "🍽️") || "🍽️";
+
+      let baseId = trimmedName.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+      if (!baseId) baseId = 'cat_' + Date.now();
+      let id = baseId;
+      let counter = 1;
+      while (MENU_DATA[id]) {
+        id = `${baseId}_${counter++}`;
+      }
+
+      if (!MENU_DATA._categories) {
+        MENU_DATA._categories = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES));
+      }
+
+      MENU_DATA._categories.push({
+        id: id,
+        name: trimmedName,
+        emoji: emoji.trim()
+      });
+      MENU_DATA[id] = [];
+
+      saveMenuData();
+      renderAdminCategoryDropdown(id);
+
+      alert(`✅ Added "${trimmedName}" category!\nTap "+ Add Dish" below to add dishes to this category.`);
+    }
+
+    function renameCurrentCategory() {
+      const select = document.getElementById('adminCategorySelect');
+      if (!select || !select.value) return;
+
+      const catId = select.value;
+      const categories = getCategoriesList();
+      const catObj = categories.find(c => c.id === catId);
+      if (!catObj) return;
+
+      const newName = prompt(`Enter new name for category "${catObj.name}":`, catObj.name);
+      if (!newName || !newName.trim()) return;
+
+      const newEmoji = prompt(`Enter emoji/icon for "${newName.trim()}":`, catObj.emoji || "🍽️") || catObj.emoji || "🍽️";
+
+      catObj.name = newName.trim();
+      catObj.emoji = newEmoji.trim();
+
+      saveMenuData();
+      renderAdminCategoryDropdown(catId);
+
+      alert(`✅ Category updated to "${catObj.name}"!`);
+    }
+
+    function deleteCurrentCategory() {
+      const select = document.getElementById('adminCategorySelect');
+      if (!select || !select.value) return;
+
+      const catId = select.value;
+      const categories = getCategoriesList();
+      const catIdx = categories.findIndex(c => c.id === catId);
+      if (catIdx === -1) return;
+
+      const catObj = categories[catIdx];
+      const items = MENU_DATA[catId] || [];
+
+      if (categories.length <= 1) {
+        alert("You cannot delete the last remaining category in the menu.");
+        return;
+      }
+
+      const confirmMsg = items.length > 0
+        ? `⚠️ Are you sure you want to delete category "${catObj.name}"?\n\nThis will also remove all ${items.length} dish(es) inside it!`
+        : `Are you sure you want to delete empty category "${catObj.name}"?`;
+
+      if (confirm(confirmMsg)) {
+        categories.splice(catIdx, 1);
+        delete MENU_DATA[catId];
+        saveMenuData();
+
+        const nextId = categories[0] ? categories[0].id : null;
+        renderAdminCategoryDropdown(nextId);
+
+        alert(`🗑️ Category "${catObj.name}" deleted.`);
+      }
+    }
+
     function renderAdminItemList() {
-      const category = document.getElementById('adminCategorySelect').value;
+      const select = document.getElementById('adminCategorySelect');
+      if (!select || !select.value) {
+        const container = document.getElementById('adminItemList');
+        if (container) container.innerHTML = `<div class="text-xs text-on-muted py-6 text-center">No categories found. Tap "+ New Category" to create one.</div>`;
+        return;
+      }
+
+      const category = select.value;
+      const categories = getCategoriesList();
+      const currentCatObj = categories.find(c => c.id === category);
+      const catLabel = currentCatObj ? currentCatObj.name : category;
+
+      const labelEl = document.getElementById('addFormCatLabel');
+      if (labelEl) labelEl.textContent = catLabel.toUpperCase();
+
       const container = document.getElementById('adminItemList');
+      if (!container) return;
+
       const items = MENU_DATA[category] || [];
 
-      document.getElementById('addFormCatLabel').textContent = category.toUpperCase();
-
       if (items.length === 0) {
-        container.innerHTML = `<div class="text-xs text-on-muted py-6 text-center">No items in this category. Tap "+ Add Item" above!</div>`;
+        container.innerHTML = `
+          <div class="text-xs text-on-muted py-8 text-center flex flex-col items-center gap-2">
+            <span class="text-2xl">${currentCatObj?.emoji || '🍽️'}</span>
+            <span>No dishes in <strong>${catLabel}</strong> yet.</span>
+            <span class="text-[11px] text-brand-gold">Tap "+ Add Dish" above to add the first item!</span>
+          </div>
+        `;
         return;
       }
 
@@ -1366,7 +1448,7 @@
       if (confirm(`Are you sure you want to delete "${item.name}" from ${category.toUpperCase()}?`)) {
         MENU_DATA[category].splice(idx, 1);
         saveMenuData();
-        renderAdminItemList();
+        renderAdminCategoryDropdown(category);
       }
     }
 
@@ -1452,7 +1534,7 @@
         if (!MENU_DATA[category]) MENU_DATA[category] = [];
         MENU_DATA[category].push(newItem);
         saveMenuData();
-        renderAdminItemList();
+        renderAdminCategoryDropdown(category);
         toggleAddItemForm();
         document.getElementById('newItemName').value = '';
         alert(`✅ Added "${name}" to ${category.toUpperCase()}!`);
@@ -1460,10 +1542,11 @@
     }
 
     function resetMenuToDefaults() {
-      if (confirm('Are you sure you want to reset the entire menu back to the original physical cards? Any custom prices or items added will be replaced.')) {
+      if (confirm('Are you sure you want to reset the entire menu back to the original physical cards? Any custom categories or dishes added will be replaced.')) {
         MENU_DATA = JSON.parse(JSON.stringify(DEFAULT_MENU_DATA));
+        MENU_DATA._categories = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES));
         saveMenuData();
-        renderAdminItemList();
+        renderAdminCategoryDropdown();
         alert('Menu reset to defaults!');
       }
     }
@@ -1499,11 +1582,14 @@
               if (isAdmin && hasUnsyncedChanges) {
                 // Admin is editing local draft, keep it
               } else {
+                if (!res.data._categories) {
+                  res.data._categories = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES));
+                }
                 MENU_DATA = res.data;
                 localStorage.setItem('grill_island_menu_data', JSON.stringify(res.data));
                 renderPhoneMenus();
                 if (document.getElementById('adminPortalModal') && !document.getElementById('adminPortalModal').classList.contains('hidden')) {
-                  renderAdminItemList();
+                  renderAdminCategoryDropdown(document.getElementById('adminCategorySelect')?.value);
                 }
               }
               updateSyncStatusBadge('synced');

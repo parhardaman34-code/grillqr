@@ -1,4 +1,19 @@
 {
+  "_categories": [
+    { "id": "burger", "name": "Burger", "emoji": "🍔" },
+    { "id": "sandwich", "name": "Sandwich", "emoji": "🥪" },
+    { "id": "wraps", "name": "Wraps", "emoji": "🌯" },
+    { "id": "marine", "name": "Marine", "emoji": "⭐" },
+    { "id": "pasta", "name": "Pasta", "emoji": "🍝" },
+    { "id": "chaap", "name": "Chaap", "emoji": "🔥" },
+    { "id": "chinese", "name": "Chinese", "emoji": "🥢" },
+    { "id": "salad", "name": "Salad", "emoji": "🥗" },
+    { "id": "fries", "name": "Fries", "emoji": "🍟" },
+    { "id": "pizza", "name": "Pizza", "emoji": "🍕" },
+    { "id": "shake", "name": "Shakes", "emoji": "🥤" },
+    { "id": "mocktail", "name": "Mocktails", "emoji": "🍹" },
+    { "id": "slush", "name": "Frost Slush", "emoji": "🍧" }
+  ],
   "burger": [
     { "name": "Veg. Burger", "price": 50 },
     { "name": "Creamy Burger", "price": 60 },
