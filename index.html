@@ -472,7 +472,7 @@
     </div>
 
     <!-- ADMIN OUT OF STOCK TIMER SELECTION MODAL -->
-    <div id="stockTimerModal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4" onclick="closeStockTimerModal(event)">
+    <div id="stockTimerModal" class="fixed inset-0 z-[80] modal-backdrop hidden flex items-center justify-center p-4" onclick="closeStockTimerModal(event)">
       <div class="w-full max-w-sm bg-surface-card rounded-3xl border border-surface-high p-5 flex flex-col shadow-2xl relative animate-in fade-in zoom-in-95 duration-200" onclick="event.stopPropagation()">
         
         <div class="flex items-center justify-between pb-3 border-b border-surface-high mb-3">
@@ -527,12 +527,12 @@
         <!-- Custom Duration Row -->
         <div class="p-2.5 rounded-2xl bg-surface-low border border-surface-high mb-3 flex items-center gap-2">
           <span class="text-[11px] text-on-muted shrink-0 font-medium">Custom:</span>
-          <input type="number" id="customStockDurationInput" placeholder="45" min="1" max="1440" class="w-16 bg-surface-card text-xs text-on-surface p-1.5 rounded-xl border border-surface-highest focus:outline-none focus:ring-1 focus:ring-brand-gold text-center">
-          <select id="customStockDurationUnit" class="bg-surface-card text-xs text-on-surface p-1.5 rounded-xl border border-surface-highest focus:outline-none flex-1">
+          <input type="number" id="customStockDurationInput" oninput="applyCustomStockDuration(false)" placeholder="45" min="1" max="1440" class="w-16 bg-surface-card text-xs text-on-surface p-1.5 rounded-xl border border-surface-highest focus:outline-none focus:ring-1 focus:ring-brand-gold text-center">
+          <select id="customStockDurationUnit" onchange="applyCustomStockDuration(false)" class="bg-surface-card text-xs text-on-surface p-1.5 rounded-xl border border-surface-highest focus:outline-none flex-1">
             <option value="mins">Minutes</option>
             <option value="hours">Hours</option>
           </select>
-          <button type="button" onclick="applyCustomStockDuration()" class="px-2.5 py-1.5 bg-surface-high hover:bg-surface-highest text-brand-gold font-bold text-xs rounded-xl active:scale-95 transition-all">
+          <button type="button" onclick="applyCustomStockDuration(true)" class="px-2.5 py-1.5 bg-surface-high hover:bg-surface-highest text-brand-gold font-bold text-xs rounded-xl active:scale-95 transition-all">
             Set
           </button>
         </div>
@@ -2217,6 +2217,7 @@
       const select = document.getElementById('stockTimerDishSelect');
       if (!select) return;
 
+      const numSelectedIdx = (selectedIdx !== null && selectedIdx !== undefined && !isNaN(Number(selectedIdx))) ? Number(selectedIdx) : null;
       const categories = getCategoriesList();
       let html = '';
       let defaultVal = null;
@@ -2228,7 +2229,7 @@
           items.forEach((it, idx) => {
             const val = `${cat.id}:::${idx}`;
             if (!defaultVal) defaultVal = val;
-            const isSel = (cat.id === selectedCategory && idx === selectedIdx);
+            const isSel = (cat.id === selectedCategory && idx === numSelectedIdx);
             const oosNote = !isItemAvailable(it) ? ' ⚠️ [Already Out of Stock]' : '';
             html += `<option value="${val}" ${isSel ? 'selected' : ''}>${it.name}${oosNote}</option>`;
           });
@@ -2239,8 +2240,8 @@
       select.innerHTML = html;
 
       let chosenVal = null;
-      if (selectedCategory && selectedIdx !== null && typeof selectedIdx === 'number') {
-        chosenVal = `${selectedCategory}:::${selectedIdx}`;
+      if (selectedCategory && numSelectedIdx !== null) {
+        chosenVal = `${selectedCategory}:::${numSelectedIdx}`;
       } else {
         chosenVal = defaultVal;
       }
@@ -2275,12 +2276,14 @@
       const selectContainer = document.getElementById('stockTimerDishSelectContainer');
       const nameEl = document.getElementById('stockTimerModalDishName');
 
-      if (category && idx !== null && typeof idx === 'number' && MENU_DATA[category]?.[idx]) {
-        activeStockTimerDish = { category, idx };
-        const item = MENU_DATA[category][idx];
+      const numIdx = (idx !== null && idx !== undefined && !isNaN(Number(idx))) ? Number(idx) : null;
+
+      if (category && numIdx !== null && MENU_DATA[category]?.[numIdx]) {
+        activeStockTimerDish = { category, idx: numIdx };
+        const item = MENU_DATA[category][numIdx];
         if (nameEl) nameEl.textContent = item.name;
         if (selectContainer) selectContainer.classList.add('hidden');
-        populateStockTimerDishDropdown(category, idx);
+        populateStockTimerDishDropdown(category, numIdx);
       } else {
         if (selectContainer) selectContainer.classList.remove('hidden');
         populateStockTimerDishDropdown();
@@ -2305,6 +2308,9 @@
     function selectStockTimerDuration(mins) {
       selectedStockMins = mins;
 
+      const customInput = document.getElementById('customStockDurationInput');
+      if (customInput) customInput.value = '';
+
       const btns = document.querySelectorAll('.stock-preset-btn');
       btns.forEach(b => {
         const bMins = b.getAttribute('data-mins');
@@ -2328,13 +2334,14 @@
       }
     }
 
-    function applyCustomStockDuration() {
+    function applyCustomStockDuration(showAlert = false) {
       const input = document.getElementById('customStockDurationInput');
-      const unit = document.getElementById('customStockDurationUnit').value;
-      const val = Number(input.value);
+      const unitEl = document.getElementById('customStockDurationUnit');
+      const unit = unitEl ? unitEl.value : 'mins';
+      const val = Number(input?.value);
 
       if (isNaN(val) || val <= 0) {
-        alert('Please enter a valid duration number (e.g. 45).');
+        if (showAlert) alert('Please enter a valid duration number (e.g. 45).');
         return;
       }
 
@@ -2353,10 +2360,31 @@
     }
 
     async function confirmSetStockTimer() {
-      if (!activeStockTimerDish) return;
+      if (!activeStockTimerDish) {
+        const select = document.getElementById('stockTimerDishSelect');
+        if (select && select.value) {
+          const [cat, idxStr] = select.value.split(':::');
+          activeStockTimerDish = { category: cat, idx: Number(idxStr) };
+        }
+      }
+      if (!activeStockTimerDish) {
+        alert('Please select a product first.');
+        return;
+      }
       const { category, idx } = activeStockTimerDish;
       const item = MENU_DATA[category]?.[idx];
-      if (!item) return;
+      if (!item) {
+        alert('Selected item not found.');
+        return;
+      }
+
+      // If user typed a custom number, apply it
+      const customInput = document.getElementById('customStockDurationInput');
+      if (customInput && customInput.value && Number(customInput.value) > 0) {
+        const val = Number(customInput.value);
+        const unit = document.getElementById('customStockDurationUnit')?.value || 'mins';
+        selectedStockMins = unit === 'hours' ? Math.round(val * 60) : Math.round(val);
+      }
 
       const now = Date.now();
       let timerLabel = '';
