@@ -379,8 +379,30 @@
 
         </div>
 
+        <!-- Item Quantity Stepper (Select quantity of burger / dish) -->
+        <div class="flex items-center justify-between p-2.5 rounded-2xl bg-surface-low border border-surface-high mt-2">
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-brand-gold/15 text-brand-gold flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-[17px]">shopping_bag</span>
+            </span>
+            <div class="flex flex-col">
+              <span class="text-xs font-bold text-on-surface">Quantity</span>
+              <span class="text-[10px] text-on-muted">Select number of items</span>
+            </div>
+          </div>
+          <div class="flex items-center bg-surface-card border border-surface-high rounded-xl p-1 gap-2.5 shadow-inner">
+            <button type="button" onclick="changeCustomDishQty(-1)" class="w-7 h-7 rounded-lg bg-surface-high hover:bg-surface-highest text-on-surface flex items-center justify-center font-bold active:scale-90 transition-all text-xs" title="Decrease item quantity">
+              <span class="material-symbols-outlined text-[16px]">remove</span>
+            </button>
+            <span id="customModalDishQtyDisplay" class="font-bold text-sm text-brand-gold min-w-[20px] text-center">1</span>
+            <button type="button" onclick="changeCustomDishQty(1)" class="w-7 h-7 rounded-lg bg-brand-gold hover:bg-brand-gold-light text-surface-lowest flex items-center justify-center font-bold active:scale-90 transition-all text-xs shadow-sm" title="Increase item quantity">
+              <span class="material-symbols-outlined text-[16px]">add</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Sticky Bottom Summary & Add to Tray Button -->
-        <div class="border-t border-surface-high pt-3 mt-3 flex items-center justify-between gap-3">
+        <div class="border-t border-surface-high pt-3 mt-2 flex items-center justify-between gap-3">
           <div class="flex flex-col">
             <span class="text-[10px] text-on-muted uppercase font-semibold">Total Price</span>
             <span id="customModalTotalDisplay" class="font-title font-bold text-lg text-brand-gold leading-tight">₹0.00</span>
@@ -1447,6 +1469,7 @@
         });
       }
 
+      const initialQty = existingLine ? (existingLine.qty || 1) : 1;
       currentCustomization = {
         category: category,
         itemIndex: itemIndex,
@@ -1454,7 +1477,7 @@
         selectedVariant: selectedVariant,
         selectedAddons: selectedAddons,
         editingCartLineId: editingCartLineId,
-        editingQty: existingLine ? existingLine.qty : 1
+        quantity: initialQty
       };
 
       // Set titles
@@ -1483,14 +1506,15 @@
         variantsList.innerHTML = '';
       }
 
+      // Dish quantity display
+      const qtyDisplay = document.getElementById('customModalDishQtyDisplay');
+      if (qtyDisplay) {
+        qtyDisplay.textContent = initialQty;
+      }
+
       // Add-ons
       renderCustomModalAddons();
       updateCustomizationTotal();
-
-      const confirmBtnText = document.getElementById('customModalConfirmBtnText');
-      if (confirmBtnText) {
-        confirmBtnText.textContent = editingCartLineId ? 'Update Item in Tray' : 'Add to Tray';
-      }
 
       const modal = document.getElementById('customizationModal');
       modal.classList.remove('hidden');
@@ -1597,6 +1621,20 @@
       updateCustomizationTotal();
     }
 
+    function changeCustomDishQty(delta) {
+      if (!currentCustomization) return;
+      const current = currentCustomization.quantity || 1;
+      const next = current + delta;
+      if (next >= 1 && next <= 99) {
+        currentCustomization.quantity = next;
+        const qtyDisplay = document.getElementById('customModalDishQtyDisplay');
+        if (qtyDisplay) {
+          qtyDisplay.textContent = next;
+        }
+        updateCustomizationTotal();
+      }
+    }
+
     function updateCustomizationTotal() {
       if (!currentCustomization) return;
       let basePrice = 0;
@@ -1618,15 +1656,25 @@
       }
 
       const unitTotal = basePrice + addonsTotal;
+      const dishQty = currentCustomization.quantity || 1;
+      const lineGrandTotal = unitTotal * dishQty;
+
       const totalDisplay = document.getElementById('customModalTotalDisplay');
       if (totalDisplay) {
-        totalDisplay.textContent = `₹${unitTotal.toFixed(2)}`;
+        totalDisplay.textContent = `₹${lineGrandTotal.toFixed(2)}`;
+      }
+
+      const confirmBtnText = document.getElementById('customModalConfirmBtnText');
+      if (confirmBtnText) {
+        const actionLabel = currentCustomization.editingCartLineId ? 'Update Item in Tray' : 'Add to Tray';
+        confirmBtnText.textContent = `${actionLabel} (${dishQty})`;
       }
     }
 
     function confirmCustomization() {
       if (!currentCustomization) return;
-      const { category, item, selectedVariant, selectedAddons, editingCartLineId, editingQty } = currentCustomization;
+      const { category, item, selectedVariant, selectedAddons, editingCartLineId } = currentCustomization;
+      const chosenQty = currentCustomization.quantity || 1;
 
       const addonsList = getAddonsList();
       const addonsMap = {};
@@ -1662,9 +1710,9 @@
 
       if (cart[lineId]) {
         if (editingCartLineId) {
-          cart[lineId].qty = editingQty || 1;
+          cart[lineId].qty = chosenQty;
         } else {
-          cart[lineId].qty += 1;
+          cart[lineId].qty += chosenQty;
         }
       } else {
         cart[lineId] = {
@@ -1675,14 +1723,15 @@
           basePrice: basePrice,
           addons: activeAddons,
           unitPrice: unitPrice,
-          qty: editingCartLineId ? (editingQty || 1) : 1
+          qty: chosenQty
         };
       }
 
       closeCustomizationModal();
       updateCartUI();
       renderPhoneMenus();
-      showPhoneToast(variantLabel ? `${item.name} (${variantLabel})` : item.name);
+      const itemTitle = variantLabel ? `${item.name} (${variantLabel})` : item.name;
+      showPhoneToast(chosenQty > 1 ? `${chosenQty}x ${itemTitle}` : itemTitle);
     }
 
     function closeCustomizationModal() {
