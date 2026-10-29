@@ -723,11 +723,13 @@
                 <option value="all_food">All Food Items (Across Entire Menu)</option>
                 <option value="burger">Burgers Only (All Current &amp; Future)</option>
                 <option value="pizza">Pizzas Only (All Current &amp; Future)</option>
+                <option value="marine">Marine Only (All Current &amp; Future)</option>
                 <option value="sandwich">Sandwiches Only</option>
                 <option value="wraps">Wraps Only</option>
                 <option value="pasta">Pasta Only</option>
                 <option value="chaap">Chaap Only</option>
                 <option value="fries">Fries Only</option>
+                <option value="chinese">Chinese Only</option>
               </select>
             </div>
             <button onclick="saveNewAddon()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl uppercase tracking-wider active:scale-95 transition-all">
@@ -812,6 +814,14 @@
         name: "Extra Tikki",
         price: 20,
         appliesTo: "burger",
+        maxQty: 2,
+        enabled: true
+      },
+      {
+        id: "extra_cheese_marine",
+        name: "Extra Cheese",
+        price: 20,
+        appliesTo: "marine",
         maxQty: 2,
         enabled: true
       },
@@ -1001,6 +1011,17 @@
       }
       if (!Array.isArray(MENU_DATA._addons) || MENU_DATA._addons.length === 0) {
         MENU_DATA._addons = JSON.parse(JSON.stringify(DEFAULT_ADDONS));
+      } else {
+        if (!MENU_DATA._addons.some(a => a.id === 'extra_cheese_marine' || (a.appliesTo === 'marine' && a.name.toLowerCase().includes('cheese')))) {
+          MENU_DATA._addons.push({
+            id: "extra_cheese_marine",
+            name: "Extra Cheese",
+            price: 20,
+            appliesTo: "marine",
+            maxQty: 2,
+            enabled: true
+          });
+        }
       }
     }
 
@@ -1040,6 +1061,17 @@
                 }
                 if (!Array.isArray(data._addons) || data._addons.length === 0) {
                   data._addons = JSON.parse(JSON.stringify(DEFAULT_ADDONS));
+                } else {
+                  if (!data._addons.some(a => a.id === 'extra_cheese_marine' || (a.appliesTo === 'marine' && a.name.toLowerCase().includes('cheese')))) {
+                    data._addons.push({
+                      id: "extra_cheese_marine",
+                      name: "Extra Cheese",
+                      price: 20,
+                      appliesTo: "marine",
+                      maxQty: 2,
+                      enabled: true
+                    });
+                  }
                 }
                 MENU_DATA = data;
                 localStorage.setItem('grill_island_menu_data', JSON.stringify(data));
@@ -1132,18 +1164,27 @@
       const isFood = isFoodCategory(category);
       const isBurger = category === 'burger' || (item && item.name && item.name.toLowerCase().includes('burger'));
       const isPizza = category === 'pizza' || (item && item.name && item.name.toLowerCase().includes('pizza'));
+      const isMarine = category === 'marine' || (item && item.name && item.name.toLowerCase().includes('marine'));
 
       return addons.filter(addon => {
         const applies = addon.appliesTo;
         if (applies === 'all_food') {
-          // Extra Cheese Slice: available for all food items across menu; pizzas use dedicated pizza cheese to avoid duplicate cheese options
-          return isFood && !isPizza;
+          // Extra Cheese Slice: available for all food items across menu; pizzas use dedicated pizza cheese
+          if (isPizza) return false;
+          // If this is marine and a specific marine cheese add-on exists, don't duplicate cheese
+          if (isMarine && addons.some(a => a.appliesTo === 'marine' && a.id !== addon.id && a.name.toLowerCase().includes('cheese'))) {
+            return false;
+          }
+          return isFood;
         }
         if (applies === 'burger') {
           return isBurger;
         }
         if (applies === 'pizza') {
           return isPizza;
+        }
+        if (applies === 'marine') {
+          return isMarine;
         }
         return applies === category;
       });
@@ -2564,6 +2605,10 @@
       if (form) {
         form.classList.toggle('hidden');
         if (!form.classList.contains('hidden')) {
+          const appliesSelect = document.getElementById('newAddonAppliesTo');
+          if (appliesSelect) {
+            appliesSelect.innerHTML = getAddonAppliesToOptions(appliesSelect.value || 'marine');
+          }
           document.getElementById('newAddonName')?.focus();
         }
       }
@@ -2610,6 +2655,20 @@
       document.getElementById('newAddonName').value = '';
       document.getElementById('newAddonPrice').value = '';
       alert(`✅ Added add-on "${name}" (₹${price})!`);
+    }
+
+    function getAddonAppliesToOptions(selectedVal) {
+      let html = `<option value="all_food" ${selectedVal === 'all_food' ? 'selected' : ''}>All Food</option>`;
+      html += `<option value="burger" ${selectedVal === 'burger' ? 'selected' : ''}>Burgers</option>`;
+      html += `<option value="pizza" ${selectedVal === 'pizza' ? 'selected' : ''}>Pizzas</option>`;
+      html += `<option value="marine" ${selectedVal === 'marine' ? 'selected' : ''}>Marine</option>`;
+      const categories = getCategoriesList();
+      categories.forEach(cat => {
+        if (cat.id === 'burger' || cat.id === 'pizza' || cat.id === 'marine') return;
+        const isSel = selectedVal === cat.id;
+        html += `<option value="${cat.id}" ${isSel ? 'selected' : ''}>${cat.name}</option>`;
+      });
+      return html;
     }
 
     function renderAdminAddonsList() {
@@ -2668,14 +2727,7 @@
 
               <div class="flex items-center bg-surface-card rounded-lg px-1 border border-surface-highest">
                 <select onchange="updateAddonField('${addon.id}', 'appliesTo', this.value)" class="bg-transparent text-[10px] text-brand-gold font-semibold p-1 focus:outline-none flex-1 truncate">
-                  <option value="all_food" ${addon.appliesTo === 'all_food' ? 'selected' : ''}>All Food</option>
-                  <option value="burger" ${addon.appliesTo === 'burger' ? 'selected' : ''}>Burgers</option>
-                  <option value="pizza" ${addon.appliesTo === 'pizza' ? 'selected' : ''}>Pizzas</option>
-                  <option value="sandwich" ${addon.appliesTo === 'sandwich' ? 'selected' : ''}>Sandwich</option>
-                  <option value="wraps" ${addon.appliesTo === 'wraps' ? 'selected' : ''}>Wraps</option>
-                  <option value="pasta" ${addon.appliesTo === 'pasta' ? 'selected' : ''}>Pasta</option>
-                  <option value="chaap" ${addon.appliesTo === 'chaap' ? 'selected' : ''}>Chaap</option>
-                  <option value="fries" ${addon.appliesTo === 'fries' ? 'selected' : ''}>Fries</option>
+                  ${getAddonAppliesToOptions(addon.appliesTo)}
                 </select>
               </div>
             </div>
@@ -3210,6 +3262,17 @@
                 }
                 if (!Array.isArray(res.data._addons) || res.data._addons.length === 0) {
                   res.data._addons = JSON.parse(JSON.stringify(DEFAULT_ADDONS));
+                } else {
+                  if (!res.data._addons.some(a => a.id === 'extra_cheese_marine' || (a.appliesTo === 'marine' && a.name.toLowerCase().includes('cheese')))) {
+                    res.data._addons.push({
+                      id: "extra_cheese_marine",
+                      name: "Extra Cheese",
+                      price: 20,
+                      appliesTo: "marine",
+                      maxQty: 2,
+                      enabled: true
+                    });
+                  }
                 }
                 MENU_DATA = res.data;
                 localStorage.setItem('grill_island_menu_data', JSON.stringify(res.data));
