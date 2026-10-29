@@ -492,6 +492,16 @@
 
         <p class="text-[11px] text-on-muted mb-3">Choose how long this item should remain hidden from customer phones. When time expires, it becomes available automatically.</p>
 
+        <!-- Dish Selection Dropdown (For selecting any dish across the menu) -->
+        <div id="stockTimerDishSelectContainer" class="hidden flex flex-col gap-1 mb-3 bg-surface-low p-2.5 rounded-2xl border border-surface-high">
+          <label class="text-[10px] text-on-muted font-bold flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px] text-brand-gold">restaurant_menu</span>
+            <span>Select Product to set Out of Stock:</span>
+          </label>
+          <select id="stockTimerDishSelect" onchange="onStockTimerDishSelectChange()" class="w-full bg-surface-card text-xs text-brand-gold font-bold p-2 rounded-xl border border-surface-highest focus:outline-none focus:ring-1 focus:ring-brand-gold">
+          </select>
+        </div>
+
         <!-- Quick Preset Duration Buttons -->
         <div class="grid grid-cols-3 gap-2 mb-3">
           <button type="button" onclick="selectStockTimerDuration(15)" class="stock-preset-btn py-2 px-1 rounded-xl text-xs font-bold bg-surface-low border border-surface-high text-on-surface hover:border-brand-gold transition-all text-center" data-mins="15">
@@ -731,14 +741,20 @@
 
         <!-- TAB 3: STOCK TIMERS & AVAILABILITY OVERVIEW -->
         <div id="adminStockView" class="hidden flex flex-col flex-1 min-h-0">
-          <div class="flex items-center justify-between pb-2 mb-2 border-b border-surface-high/60">
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-surface-high/60 gap-1.5">
             <div>
               <h4 class="font-title font-bold text-xs text-on-surface">Out-of-Stock Overview</h4>
               <p class="text-[10px] text-on-muted">Dishes hidden from customer QR menus with live timers.</p>
             </div>
-            <button onclick="makeAllItemsAvailableNow()" class="px-2.5 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 rounded-xl font-bold text-[11px] active:scale-95 transition-all">
-              Make All Available
-            </button>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="openStockTimerModal()" class="px-2.5 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-xl font-bold text-xs flex items-center gap-1 active:scale-95 transition-all shadow-sm">
+                <span class="material-symbols-outlined text-[15px]">add_circle</span>
+                <span>+ Out of Stock</span>
+              </button>
+              <button onclick="makeAllItemsAvailableNow()" class="px-2 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 rounded-xl font-bold text-[11px] active:scale-95 transition-all" title="Make all dishes available in menu">
+                Restore All
+              </button>
+            </div>
           </div>
 
           <div id="adminStockTimersList" class="flex flex-col gap-2 overflow-y-auto flex-1 pr-1 py-1"></div>
@@ -2197,21 +2213,87 @@
     let activeStockTimerDish = null; // { category, idx }
     let selectedStockMins = 60; // default 1 hour
 
-    function openStockTimerModal(category, idx) {
-      const item = MENU_DATA[category]?.[idx];
-      if (!item) return;
+    function populateStockTimerDishDropdown(selectedCategory = null, selectedIdx = null) {
+      const select = document.getElementById('stockTimerDishSelect');
+      if (!select) return;
 
-      activeStockTimerDish = { category, idx };
+      const categories = getCategoriesList();
+      let html = '';
+      let defaultVal = null;
+
+      categories.forEach(cat => {
+        const items = MENU_DATA[cat.id] || [];
+        if (items.length > 0) {
+          html += `<optgroup label="${cat.name.toUpperCase()}">`;
+          items.forEach((it, idx) => {
+            const val = `${cat.id}:::${idx}`;
+            if (!defaultVal) defaultVal = val;
+            const isSel = (cat.id === selectedCategory && idx === selectedIdx);
+            const oosNote = !isItemAvailable(it) ? ' ⚠️ [Already Out of Stock]' : '';
+            html += `<option value="${val}" ${isSel ? 'selected' : ''}>${it.name}${oosNote}</option>`;
+          });
+          html += `</optgroup>`;
+        }
+      });
+
+      select.innerHTML = html;
+
+      let chosenVal = null;
+      if (selectedCategory && selectedIdx !== null && typeof selectedIdx === 'number') {
+        chosenVal = `${selectedCategory}:::${selectedIdx}`;
+      } else {
+        chosenVal = defaultVal;
+      }
+
+      if (chosenVal) {
+        select.value = chosenVal;
+        const [c, i] = chosenVal.split(':::');
+        const idxNum = Number(i);
+        activeStockTimerDish = { category: c, idx: idxNum };
+        const it = MENU_DATA[c]?.[idxNum];
+        if (it) {
+          const nameEl = document.getElementById('stockTimerModalDishName');
+          if (nameEl) nameEl.textContent = it.name;
+        }
+      }
+    }
+
+    function onStockTimerDishSelectChange() {
+      const select = document.getElementById('stockTimerDishSelect');
+      if (!select || !select.value) return;
+      const [cat, idxStr] = select.value.split(':::');
+      const idx = Number(idxStr);
+      activeStockTimerDish = { category: cat, idx: idx };
+      const item = MENU_DATA[cat]?.[idx];
+      if (item) {
+        const nameEl = document.getElementById('stockTimerModalDishName');
+        if (nameEl) nameEl.textContent = item.name;
+      }
+    }
+
+    function openStockTimerModal(category = null, idx = null) {
+      const selectContainer = document.getElementById('stockTimerDishSelectContainer');
+      const nameEl = document.getElementById('stockTimerModalDishName');
+
+      if (category && idx !== null && typeof idx === 'number' && MENU_DATA[category]?.[idx]) {
+        activeStockTimerDish = { category, idx };
+        const item = MENU_DATA[category][idx];
+        if (nameEl) nameEl.textContent = item.name;
+        if (selectContainer) selectContainer.classList.add('hidden');
+        populateStockTimerDishDropdown(category, idx);
+      } else {
+        if (selectContainer) selectContainer.classList.remove('hidden');
+        populateStockTimerDishDropdown();
+      }
+
       selectedStockMins = 60;
-
-      document.getElementById('stockTimerModalDishName').textContent = item.name;
       selectStockTimerDuration(60);
 
       const customInput = document.getElementById('customStockDurationInput');
       if (customInput) customInput.value = '';
 
       const modal = document.getElementById('stockTimerModal');
-      modal.classList.remove('hidden');
+      if (modal) modal.classList.remove('hidden');
     }
 
     function closeStockTimerModal() {
@@ -2252,7 +2334,7 @@
       const val = Number(input.value);
 
       if (isNaN(val) || val <= 0) {
-        alert('Please enter a valid duration number.');
+        alert('Please enter a valid duration number (e.g. 45).');
         return;
       }
 
@@ -2270,32 +2352,43 @@
       }
     }
 
-    function confirmSetStockTimer() {
+    async function confirmSetStockTimer() {
       if (!activeStockTimerDish) return;
       const { category, idx } = activeStockTimerDish;
       const item = MENU_DATA[category]?.[idx];
       if (!item) return;
 
       const now = Date.now();
+      let timerLabel = '';
       if (selectedStockMins === 'manual') {
         item.status = 'unavailable';
         item.outOfStockUntil = null;
+        timerLabel = 'Until Manually Enabled';
       } else {
         const durationMs = Number(selectedStockMins) * 60 * 1000;
         item.status = 'temp_out_of_stock';
         item.outOfStockUntil = now + durationMs;
+        if (selectedStockMins < 60) {
+          timerLabel = `${selectedStockMins} Minutes`;
+        } else {
+          const hrs = selectedStockMins / 60;
+          timerLabel = `${hrs} Hour${hrs > 1 ? 's' : ''}`;
+        }
       }
       item.lastUpdated = now;
       item.updatedBy = 'admin';
 
       saveMenuData();
+      publishMenuGlobally(true); // Sync instantly to Firebase and all customer phones!
       closeStockTimerModal();
       renderAdminItemList();
       renderAdminStockTimersList();
       updateAdminStockBadge();
+
+      alert(`✅ "${item.name}" is now OUT OF STOCK for ${timerLabel}!\nIt has been hidden from all customer phones.`);
     }
 
-    function makeItemAvailableNow(category, idx) {
+    async function makeItemAvailableNow(category, idx) {
       const item = MENU_DATA[category]?.[idx];
       if (!item) return;
 
@@ -2305,12 +2398,15 @@
       item.updatedBy = 'admin';
 
       saveMenuData();
+      publishMenuGlobally(true); // Sync instantly to Firebase and all customer phones!
       renderAdminItemList();
       renderAdminStockTimersList();
       updateAdminStockBadge();
+
+      showPhoneToast(`${item.name} is now Available!`);
     }
 
-    function extendStockTimer(category, idx, additionalMins) {
+    async function extendStockTimer(category, idx, additionalMins) {
       const item = MENU_DATA[category]?.[idx];
       if (!item) return;
 
@@ -2324,12 +2420,13 @@
       item.updatedBy = 'admin';
 
       saveMenuData();
+      publishMenuGlobally(true);
       renderAdminItemList();
       renderAdminStockTimersList();
       updateAdminStockBadge();
     }
 
-    function makeAllItemsAvailableNow() {
+    async function makeAllItemsAvailableNow() {
       if (!confirm('Make all dishes available in the menu now?')) return;
 
       let count = 0;
@@ -2350,6 +2447,7 @@
       }
 
       saveMenuData();
+      publishMenuGlobally(true);
       renderAdminItemList();
       renderAdminStockTimersList();
       updateAdminStockBadge();
@@ -2375,10 +2473,14 @@
 
       if (outOfStockItems.length === 0) {
         container.innerHTML = `
-          <div class="text-xs text-on-muted py-10 text-center flex flex-col items-center gap-2">
-            <span class="material-symbols-outlined text-3xl text-emerald-400">check_circle</span>
-            <span class="font-bold text-on-surface">All Dishes Currently In Stock</span>
-            <span class="text-[11px] text-on-muted">No items are hidden from customers.</span>
+          <div class="text-xs text-on-muted py-8 text-center flex flex-col items-center gap-2 bg-surface-low/50 rounded-2xl border border-surface-high/60 p-4">
+            <span class="material-symbols-outlined text-4xl text-emerald-400">check_circle</span>
+            <span class="font-bold text-sm text-on-surface">All Dishes Currently In Stock</span>
+            <p class="text-[11px] text-on-muted max-w-xs">Tap the button below to hide any dish from the QR menu with an automatic restoration timer.</p>
+            <button onclick="openStockTimerModal()" class="mt-2 px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-md active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-[16px]">timer_off</span>
+              <span>+ Mark a Product Out of Stock</span>
+            </button>
           </div>
         `;
         return;
@@ -2401,9 +2503,14 @@
                 </span>
               </div>
 
-              <button onclick="makeItemAvailableNow('${category}', ${idx})" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shrink-0 active:scale-95 transition-all shadow-sm">
-                Make Available
-              </button>
+              <div class="flex items-center gap-1 shrink-0">
+                <button onclick="openStockTimerModal('${category}', ${idx})" class="px-2 py-1 bg-surface-card hover:bg-surface-high text-on-muted hover:text-on-surface rounded-xl text-[10px] font-bold border border-surface-highest transition-all" title="Change stock timer">
+                  Timer
+                </button>
+                <button onclick="makeItemAvailableNow('${category}', ${idx})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold active:scale-95 transition-all shadow-sm">
+                  Make Available
+                </button>
+              </div>
             </div>
 
             ${details.status === 'temp_out_of_stock' ? `
@@ -2784,15 +2891,15 @@
         const availDetails = getItemAvailabilityDetails(item);
 
         const availButtonHtml = isAvail ? `
-          <button onclick="openStockTimerModal('${category}', ${idx})" class="px-2 py-1 rounded-xl bg-emerald-500/15 text-emerald-400 hover:bg-emerald-500/25 border border-emerald-500/30 text-[10px] font-bold flex items-center gap-1 shrink-0 active:scale-95 transition-all" title="Click to set Out of Stock">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> In Stock
+          <button onclick="openStockTimerModal('${category}', ${idx})" class="px-2 py-1 rounded-xl bg-surface-card hover:bg-red-500/15 text-on-muted hover:text-red-400 border border-surface-highest hover:border-red-500/30 text-[10px] font-bold flex items-center gap-1 shrink-0 active:scale-95 transition-all" title="Click to set Out of Stock & Timer">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> In Stock &bull; <span class="text-red-400 font-bold">+ OOS</span>
           </button>
         ` : `
           <div class="flex items-center gap-1 shrink-0">
-            <button onclick="openStockTimerModal('${category}', ${idx})" class="px-2 py-1 rounded-xl bg-red-500/15 text-red-400 hover:bg-red-500/25 border border-red-500/30 text-[10px] font-bold flex items-center gap-1 active:scale-95 transition-all" title="Click to adjust stock timer">
+            <button onclick="openStockTimerModal('${category}', ${idx})" class="px-2 py-1 rounded-xl bg-red-600/20 text-red-400 border border-red-500/40 text-[10px] font-bold flex items-center gap-1 active:scale-95 transition-all" title="Click to adjust stock timer">
               <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> ${availDetails.label}
             </button>
-            <button onclick="makeItemAvailableNow('${category}', ${idx})" class="px-2 py-1 rounded-xl bg-surface-card hover:bg-surface-high text-emerald-400 text-[10px] font-bold border border-surface-highest" title="Make Available Now">
+            <button onclick="makeItemAvailableNow('${category}', ${idx})" class="px-2 py-1 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold active:scale-95 transition-all shadow-sm" title="Restore to Customer Menu">
               ✓ In Stock
             </button>
           </div>
