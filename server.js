@@ -20,7 +20,8 @@ const MIME_TYPES = {
 
 function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, HEAD, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
@@ -28,7 +29,86 @@ function handler(req, res) {
     return;
   }
 
-  let safePath = decodeURI((req.url || '/').split('?')[0]);
+  const urlPath = (req.url || '/').split('?')[0];
+
+  // API: Server-side Order and Add-on Validation
+  if (urlPath === '/api/validate-order' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const payload = JSON.parse(body || '{}');
+        const items = payload.items || [];
+        const menuPath = path.join(PUBLIC_DIR, 'menu.json');
+        const menuData = JSON.parse(fs.readFileSync(menuPath, 'utf8'));
+        const addonsConfig = menuData._addons || [];
+        const addonsMap = {};
+        addonsConfig.forEach(a => { addonsMap[a.id] = a; });
+
+        let calculatedTotal = 0;
+        const now = Date.now();
+
+        for (const it of items) {
+          const cat = it.category;
+          const catItems = menuData[cat] || [];
+          const found = catItems.find(x => x.name === it.name);
+
+          if (!found) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ valid: false, error: `Dish "${it.name}" was not found in ${cat}.` }));
+            return;
+          }
+
+          // Check out-of-stock
+          if (found.status === 'unavailable') {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ valid: false, error: `"${found.name}" is currently unavailable.` }));
+            return;
+          }
+          if (found.status === 'temp_out_of_stock' && found.outOfStockUntil && now < found.outOfStockUntil) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ valid: false, error: `"${found.name}" is temporarily out of stock.` }));
+            return;
+          }
+
+          // Compute item base price
+          let basePrice = found.price || 0;
+          if (found.variants && it.variantLabel) {
+            const v = found.variants.find(vx => vx.label === it.variantLabel);
+            if (v) basePrice = v.price;
+          }
+
+          // Validate add-ons
+          let addonsSum = 0;
+          if (Array.isArray(it.addons)) {
+            for (const add of it.addons) {
+              const cfg = addonsMap[add.id];
+              if (!cfg || cfg.enabled === false) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ valid: false, error: `Add-on "${add.name || add.id}" is not available.` }));
+                return;
+              }
+              const addQty = Math.max(1, Number(add.qty) || 1);
+              addonsSum += (cfg.price * addQty);
+            }
+          }
+
+          const lineUnitPrice = basePrice + addonsSum;
+          const lineQty = Math.max(1, Number(it.qty) || 1);
+          calculatedTotal += (lineUnitPrice * lineQty);
+        }
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ valid: true, grandTotal: calculatedTotal, verifiedAt: now }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ valid: false, error: 'Invalid order payload' }));
+      }
+    });
+    return;
+  }
+
+  let safePath = decodeURI(urlPath);
   if (safePath === '/' || safePath === '') {
     safePath = '/index.html';
   }

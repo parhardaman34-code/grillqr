@@ -14,6 +14,48 @@
     { "id": "mocktail", "name": "Mocktails", "emoji": "🍹" },
     { "id": "slush", "name": "Frost Slush", "emoji": "🍧" }
   ],
+  "_addons": [
+    {
+      "id": "extra_cheese_slice",
+      "name": "Extra Cheese Slice",
+      "price": 20,
+      "maxQty": 3,
+      "appliesTo": "all_food",
+      "targetCategory": "",
+      "excludeCategories": ["shake", "mocktail", "slush", "pizza"],
+      "enabled": true
+    },
+    {
+      "id": "extra_tikki",
+      "name": "Extra Tikki",
+      "price": 20,
+      "maxQty": 2,
+      "appliesTo": "category",
+      "targetCategory": "burger",
+      "excludeCategories": [],
+      "enabled": true
+    },
+    {
+      "id": "extra_cheese_reg",
+      "name": "Extra Cheese (Regular)",
+      "price": 30,
+      "maxQty": 1,
+      "appliesTo": "category",
+      "targetCategory": "pizza",
+      "excludeCategories": [],
+      "enabled": true
+    },
+    {
+      "id": "extra_cheese_large",
+      "name": "Extra Cheese (Double / Large)",
+      "price": 50,
+      "maxQty": 1,
+      "appliesTo": "category",
+      "targetCategory": "pizza",
+      "excludeCategories": [],
+      "enabled": true
+    }
+  ],
   "burger": [
     { "name": "Veg. Burger", "price": 50 },
     { "name": "Creamy Burger", "price": 60 },
